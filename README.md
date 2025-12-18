@@ -22,8 +22,7 @@ mvn clean package
 ```
 
 Le fichier JAR généré sera situé dans le répertoire `target/` :
-- `target/my-java-app-1.0.0.jar` (JAR exécutable)
-- `target/my-java-app-1.0.0-shaded.jar` (JAR avec dépendances - uber JAR)
+- `target/swingy.jar` (JAR exécutable)
 
 ### Exécuter le JAR
 
