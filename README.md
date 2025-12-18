@@ -5,18 +5,7 @@ Un projet Java simple construit avec Maven.
 ## Structure du projet
 
 ```
-.
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/example/
-│   │           └── App.java
-│   └── test/
-│       └── java/
-│           └── com/example/
-│               └── AppTest.java
-├── pom.xml
-└── README.md
+Coming soon
 ```
 
 ## Prérequis
