@@ -1,6 +1,9 @@
 package fr.aallouv;
 
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -8,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class AppTest {
     @Test
-    public void testAppExists() {
+    public void testAppExists() throws IOException {
         assertNotNull(new App());
     }
 }
