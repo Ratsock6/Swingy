@@ -1,6 +1,6 @@
 package fr.aallouv.enums;
 
-public enum GameViews {
+public enum EGameViews {
 
     GUI("gui"),
     CONSOLE("console");
