@@ -1,6 +1,6 @@
 package fr.aallouv;
 
-import fr.aallouv.enums.GameViews;
+import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.GameManager;
 import fr.aallouv.utils.GenerateRandom;
 import fr.aallouv.utils.Logger;
@@ -14,10 +14,16 @@ public class App {
     private final Logger logger;
     private final GameManager gameManager;
 
-    public App(GameViews gameViews) throws IOException {
+    public App(EGameViews gameViews, int numberOfRoom) throws IOException {
         app = this;
         logger = new Logger();
-        gameManager = new GameManager(gameViews);
+
+        if (numberOfRoom < 7) {
+            numberOfRoom = 7;
+            logger.log("Incorrect number of room. Minimum 7.");
+        }
+
+        gameManager = new GameManager(gameViews, numberOfRoom);
     }
 
 
@@ -33,7 +39,11 @@ public class App {
             return;
         }
 
-        new App(args[0].equals("gui") ? GameViews.GUI : GameViews.CONSOLE);
+        int numberOfRoom = 7;
+        if (args.length == 2)
+            numberOfRoom =  Integer.parseInt(args[1]);
+
+        new App(args[0].equals("gui") ? EGameViews.GUI : EGameViews.CONSOLE, numberOfRoom);
     }
 
     public static App getApp() {
@@ -42,5 +52,9 @@ public class App {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

@@ -7,7 +7,7 @@ public enum EGameViews {
 
     private final String string;;
 
-    GameViews(String string) {
+    EGameViews(String string) {
         this.string = string;
     }
 

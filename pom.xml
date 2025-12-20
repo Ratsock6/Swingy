@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>Swingy</name>
-    <description>A small MMO RPG</description>
+    <description>A small RPG</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
