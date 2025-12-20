@@ -5,13 +5,14 @@ import fr.aallouv.App;
 public class SlotMap {
 
     private EMapRoom eMapRoom;
-    public final int coordX, coordY;
+    private final int coordX, coordY;
 
     public SlotMap(EMapRoom mapRoom, int x, int y) {
         this.eMapRoom = mapRoom;
         this.coordX = x;
         this.coordY = y;
         App.getApp().getGameManager().getMapManager().getMaps().add(this);
+        App.getApp().getLogger().log("New room created:" + mapRoom.getName() + " coord:" + coordX + "/" + coordY);
     }
 
     public EMapRoom geteMapRoom() {
