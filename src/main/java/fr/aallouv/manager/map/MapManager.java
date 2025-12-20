@@ -38,6 +38,7 @@ public class MapManager {
 			int distanceY = slotMap.getCoordY() - slotsMap.getCoordY();
 			if (!((distanceY >= -1 && distanceY <= 1) && (distanceX >= -1 && distanceX <= 1)))
 				continue;
+			// TODO : Continue
 		}
 
 		return  cardinalPoints;
