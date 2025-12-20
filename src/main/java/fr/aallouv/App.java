@@ -2,6 +2,8 @@ package fr.aallouv;
 
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.GameManager;
+import fr.aallouv.manager.map.MapManager;
+import fr.aallouv.manager.map.MazeGenerator;
 import fr.aallouv.utils.GenerateRandom;
 import fr.aallouv.utils.Logger;
 
@@ -23,7 +25,20 @@ public class App {
             logger.log("Incorrect number of room. Minimum 7.");
         }
 
-        gameManager = new GameManager(gameViews, numberOfRoom);
+        gameManager = new GameManager(gameViews);
+        gameManager.setMap(new MapManager(numberOfRoom));
+        gameManager.getMapManager().initMap();
+
+        gameManager.getMapManager().printMapInTerminal();
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+
+        MazeGenerator mazeGenerator = new MazeGenerator(numberOfRoom);
+        mazeGenerator.printMazeInTerminal();
+
     }
 
 

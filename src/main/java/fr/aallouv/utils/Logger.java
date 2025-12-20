@@ -19,7 +19,7 @@ public class Logger {
             logDir.mkdirs();
         }
 
-        File logFile = new File(logDir, LocalDateTime.now().toString());
+        File logFile = new File(logDir, /*LocalDateTime.now().toString()*/ "log");
         if (!logFile.exists()) {
             logFile.createNewFile();
         }
@@ -30,6 +30,15 @@ public class Logger {
         String finalLogMessage = LocalDateTime.now().toString() + " [LOGS]: " + log + "\n";
         try {
             writer.write(finalLogMessage);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void space() {
+        try {
+            writer.write("\n");
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

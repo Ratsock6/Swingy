@@ -6,11 +6,11 @@ import fr.aallouv.manager.map.MapManager;
 public class GameManager {
 
     private EGameViews gameViews;
-    private final MapManager map;
+    private MapManager map;
 
-    public GameManager(EGameViews gameViews, int numberOfRoom) {
+    public GameManager(EGameViews gameViews) {
         this.gameViews = gameViews;
-        this.map = new MapManager(numberOfRoom);
+        this.map = null;
     }
 
     public  EGameViews getGameViews() {
@@ -29,6 +29,10 @@ public class GameManager {
         gameViews = EGameViews.GUI;
     }
 
+
+    public void setMap(MapManager map) {
+        this.map = map;
+    }
 
     public MapManager getMapManager() {
         return map;
