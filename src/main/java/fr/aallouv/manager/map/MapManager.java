@@ -17,6 +17,11 @@ public class MapManager {
 		this.maps = new ArrayList<>();
 	}
 
+	public MapManager(int numberOfRoom, ArrayList<SlotMap> maps) {
+		this.numberOfRoom = numberOfRoom;
+		this.maps = maps;
+	}
+
 	public void initMap() {
 		new SlotMap(EMapRoom.START, 0, 0);
 
@@ -36,25 +41,6 @@ public class MapManager {
 			App.getApp().getLogger().space();
 
 		}
-
-		//TODO: Continuer la logique. Problèmatique actuel faire attention que le point cardinal choisi soit possible pour placer la salle d'exit après. Qu'il ne soit pas entouré de salle aussi.
-//		SlotMap slotMap = getAvailableSlotMapToAddBossRoom().get(new Random().nextInt(getMaps().size()));
-//		ArrayList<CardinalPoint> cardinalPointsAvailable = getCardinalPointsAvailable(slotMap.getCoordX(), slotMap.getCoordY());
-//		Collections.shuffle(cardinalPointsAvailable);
-//		for (CardinalPoint cardinalPointAvaialable : cardinalPointsAvailable) {
-//			int finalX = slotMap.getCoordX() + cardinalPointAvaialable.getAddX();
-//			int finalY = slotMap.getCoordY() + cardinalPointAvaialable.getAddY();
-//			if (getCardinalPointsAvailable(finalX, finalY).isEmpty())
-//				continue;
-//			SlotMap bossSlot = new SlotMap(EMapRoom.BOSS, finalX, finalY);
-//			ArrayList<CardinalPoint> cardinalPointsAvailableForExit = getCardinalPointsAvailable(bossSlot.getCoordX(), bossSlot.getCoordY());
-//			Collections.shuffle(cardinalPointsAvailableForExit);
-//			int finalExitX = bossSlot.getCoordX() + cardinalPointsAvailableForExit.get(0).getAddX();
-//			int finalExitY = bossSlot.getCoordY() + cardinalPointsAvailableForExit.get(0).getAddY();
-//			new SlotMap(EMapRoom.EXIT, finalExitX, finalExitY);
-//			break;
-//		}
-
 		for (SlotMap slotMapIter : getMaps()) {
 			App.getApp().getLogger().log("Room[" + slotMapIter.getId() + "]: " + slotMapIter.geteMapRoom().name() + " at (" + slotMapIter.getCoordX() + "," + slotMapIter.getCoordY() + ")");
 		}
@@ -66,6 +52,26 @@ public class MapManager {
 
 	public ArrayList<SlotMap> getMaps() {
 		return maps;
+	}
+
+	public int getVisitedRoomsCount() {
+		int count = 0;
+		for (SlotMap slotMap : getMaps()) {
+			if (slotMap.isVisited()) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int getMonsterDefeatedRoomsCount() {
+		int count = 0;
+		for (SlotMap slotMap : getMaps()) {
+			if (slotMap.isMonsterDefeated()) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 
