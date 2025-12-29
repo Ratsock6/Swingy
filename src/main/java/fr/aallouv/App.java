@@ -33,8 +33,6 @@ public class App {
 
         System.out.println("");
         System.out.println("");
-        System.out.println("");
-        System.out.println("");
 
         MazeGenerator mazeGenerator = new MazeGenerator(numberOfRoom);
         mazeGenerator.printMazeInTerminal();

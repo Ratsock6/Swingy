@@ -106,14 +106,18 @@ public class MapManager {
 	}
 
 	public ArrayList<SlotMap> getAvailableSlotMapToAddNewSlotMap() {
-		ArrayList<SlotMap> slotMapArrayList = new ArrayList<>();
-		for (SlotMap slots : getMaps()) {
-			ArrayList<CardinalPoint> cardinalPointsAvailable = getCardinalPointsAvailable(slots.getCoordX(), slots.getCoordY());
-			if (cardinalPointsAvailable.isEmpty())
-				continue;
-			slotMapArrayList.add(slots);
+		ArrayList<SlotMap> lastGenerateSlotMap = new ArrayList<>();
+		for (int i = getMaps().size() - 1; i >= 0 && i >= getMaps().size() - 5; i--) {
+			if (!getCardinalPointsAvailable(getMaps().get(i).getCoordX(), getMaps().get(i).getCoordY()).isEmpty())
+				lastGenerateSlotMap.add(getMaps().get(i));
 		}
-		return slotMapArrayList;
+		while (lastGenerateSlotMap.isEmpty()) {
+			SlotMap slotMap = getMaps().get(new Random().nextInt(getMaps().size()));
+			if (getCardinalPointsAvailable(slotMap.getCoordX(), slotMap.getCoordY()).isEmpty())
+				continue;
+			lastGenerateSlotMap.add(slotMap);
+		}
+		return lastGenerateSlotMap;
 	}
 
 	public void printMapInTerminal() {
