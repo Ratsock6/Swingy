@@ -12,14 +12,16 @@ public class MapManager {
 	private final int numberOfRoom;
 	private final ArrayList<SlotMap> maps;
 
-	public MapManager(int numberOfRoom) {
-		this.numberOfRoom = numberOfRoom;
+	public MapManager() {
+		this.numberOfRoom = App.getApp().getGameManager().getNumberOfRooms();
 		this.maps = new ArrayList<>();
+		App.getApp().getLogger().log("MapManager initialized to generate a map with " + numberOfRoom + " rooms.");
 	}
 
-	public MapManager(int numberOfRoom, ArrayList<SlotMap> maps) {
-		this.numberOfRoom = numberOfRoom;
+	public MapManager(ArrayList<SlotMap> maps) {
+		this.numberOfRoom = maps.size();
 		this.maps = maps;
+		App.getApp().getLogger().log("MapManager initialized with existing map of " + maps.size() + " rooms.");
 	}
 
 	public void initMap() {
@@ -44,6 +46,8 @@ public class MapManager {
 		for (SlotMap slotMapIter : getMaps()) {
 			App.getApp().getLogger().log("Room[" + slotMapIter.getId() + "]: " + slotMapIter.geteMapRoom().name() + " at (" + slotMapIter.getCoordX() + "," + slotMapIter.getCoordY() + ")");
 		}
+
+		App.getApp().getLogger().log("Initial map generation complete. Total rooms generated: " + getMaps().size());
 	}
 
 	public int getNumberOfRoom() {
@@ -179,6 +183,15 @@ public class MapManager {
 //			}
 //			System.out.println(line);
 //		}
+	}
+
+	public SlotMap getSlotMapByCoordinates(int x, int y) {
+		for (SlotMap slotMap : getMaps()) {
+			if (slotMap.getCoordX() == x && slotMap.getCoordY() == y) {
+				return slotMap;
+			}
+		}
+		return null;
 	}
 
 }

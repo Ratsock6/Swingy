@@ -3,6 +3,8 @@ package fr.aallouv;
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.GameManager;
 import fr.aallouv.manager.map.MapManager;
+import fr.aallouv.manager.player.EClass;
+import fr.aallouv.manager.player.Hero;
 import fr.aallouv.utils.GenerateRandom;
 import fr.aallouv.utils.Logger;
 
@@ -21,14 +23,15 @@ public class App {
 
         if (numberOfRoom < 7) {
             numberOfRoom = 7;
-            logger.log("Incorrect number of room. Minimum 7.");
+            logger.log("[INFO] Incorrect number of room. Minimum 7.");
         }
-
-        gameManager = new GameManager(gameViews);
-        gameManager.setMap(new MapManager(numberOfRoom));
-        gameManager.getMapManager().initMap();
-
-        gameManager.getMapManager().printMapInTerminal();
+        gameManager = new GameManager(gameViews, numberOfRoom);
+        MapManager mapManager = new MapManager();
+        gameManager.setMap(mapManager);
+        mapManager.initMap();
+        Hero hero = new Hero("Antoine", EClass.WARRIOR);
+        gameManager.setHero(hero);
+        gameManager.startGame(hero, mapManager);
     }
 
 
