@@ -1,16 +1,24 @@
 package fr.aallouv.manager;
 
+import fr.aallouv.App;
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.map.MapManager;
+import fr.aallouv.manager.map.SlotMap;
+import fr.aallouv.manager.player.Hero;
 
 public class GameManager {
 
     private EGameViews gameViews;
     private MapManager map;
+    private int numberOfRooms;
+    private Hero hero;
 
-    public GameManager(EGameViews gameViews) {
+    public GameManager(EGameViews gameViews, int numberOfRooms) {
         this.gameViews = gameViews;
+        this.numberOfRooms = numberOfRooms;
         this.map = null;
+        this.hero = null;
+        App.getApp().getLogger().log("GameManager initialized with view: " + gameViews.name());
     }
 
     public  EGameViews getGameViews() {
@@ -29,6 +37,9 @@ public class GameManager {
         gameViews = EGameViews.GUI;
     }
 
+    public int getNumberOfRooms() {
+        return numberOfRooms;
+    }
 
     public void setMap(MapManager map) {
         this.map = map;
@@ -38,7 +49,32 @@ public class GameManager {
         return map;
     }
 
-    public void startGame() {
-        
+    public Hero getHero() {
+        return hero;
+    }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public void printMessage(String message) {
+        App.getApp().getLogger().log("[GamePlay] " + message);
+        System.out.println(message);
+    }
+
+    public void enterRoom(SlotMap slotMap) {
+        printMessage("You have entered a " + slotMap.geteMapRoom().getName());
+        if (slotMap.geteMapRoom().isCombatRoom() && !slotMap.isMonsterDefeated()) {
+            printMessage("A wild monster appears!");
+        }
+    }
+
+    public void startGame(Hero hero, MapManager map) {
+        this.hero = hero;
+        this.map = map;
+        App.getApp().getLogger().log("Game started with Hero: " + hero.getName() + " and Map with " + map.getMaps().size() + " rooms.");
+        printMessage("Game started! Welcome " + hero.getName() + "!");
+        SlotMap actualSlotMap = getMapManager().getSlotMapByCoordinates(hero.getX(), hero.getY());
+        enterRoom(actualSlotMap);
     }
 }
