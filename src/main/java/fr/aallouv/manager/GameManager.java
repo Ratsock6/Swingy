@@ -37,4 +37,8 @@ public class GameManager {
     public MapManager getMapManager() {
         return map;
     }
+
+    public void startGame() {
+        
+    }
 }
