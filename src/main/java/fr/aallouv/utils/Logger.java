@@ -19,7 +19,7 @@ public class Logger {
             logDir.mkdirs();
         }
 
-        File logFile = new File(logDir, /*LocalDateTime.now().toString()*/ "log");
+        File logFile = new File(logDir, LocalDateTime.now().toString());
         if (!logFile.exists()) {
             logFile.createNewFile();
         }
