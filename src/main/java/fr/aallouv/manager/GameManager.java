@@ -6,6 +6,8 @@ import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.map.SlotMap;
 import fr.aallouv.manager.player.Hero;
 
+import java.util.Scanner;
+
 public class GameManager {
 
     private EGameViews gameViews;
@@ -32,6 +34,7 @@ public class GameManager {
     public void toggleGameView() {
         if (gameViews == EGameViews.GUI) {
             gameViews = EGameViews.CONSOLE;
+            gameLoop();
             return;
         }
         gameViews = EGameViews.GUI;
@@ -62,11 +65,44 @@ public class GameManager {
         System.out.println(message);
     }
 
+    public void takeInput(String input) {
+        App.getApp().getLogger().log("[Input] " + input);
+        System.out.println("Input received: " + input);
+
+        if (input.equalsIgnoreCase("toggleview")) {
+            toggleGameView();
+            App.getApp().getLogger().log("Game view toggled to: " + gameViews.name());
+        }
+    }
+
     public void enterRoom(SlotMap slotMap) {
         printMessage("You have entered a " + slotMap.geteMapRoom().getName());
+        slotMap.setVisited(true);
         if (slotMap.geteMapRoom().isCombatRoom() && !slotMap.isMonsterDefeated()) {
             printMessage("A wild monster appears!");
         }
+    }
+
+    public void gameLoop() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("> ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("Goodbye!");
+                break;
+            }
+
+            if (input.equalsIgnoreCase("toggleview")) {
+                toggleGameView();
+                break;
+            }
+
+            System.out.println("You entered: " + input);
+        }
+        scanner.close();
     }
 
     public void startGame(Hero hero, MapManager map) {
@@ -76,5 +112,6 @@ public class GameManager {
         printMessage("Game started! Welcome " + hero.getName() + "!");
         SlotMap actualSlotMap = getMapManager().getSlotMapByCoordinates(hero.getX(), hero.getY());
         enterRoom(actualSlotMap);
+        gameLoop();
     }
 }

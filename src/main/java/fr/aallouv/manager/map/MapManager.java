@@ -47,6 +47,7 @@ public class MapManager {
 			App.getApp().getLogger().log("Room[" + slotMapIter.getId() + "]: " + slotMapIter.geteMapRoom().name() + " at (" + slotMapIter.getCoordX() + "," + slotMapIter.getCoordY() + ")");
 		}
 
+		printMapInLogFile();
 		App.getApp().getLogger().log("Initial map generation complete. Total rooms generated: " + getMaps().size());
 	}
 
@@ -130,7 +131,7 @@ public class MapManager {
 		return lastGenerateSlotMap;
 	}
 
-	public void printMapInTerminal() {
+	public void printMapInLogFile() {
 		int absisMin = 0, abscisseMax = 0, ordonneMin = 0, ordonneMax = 0;
 		for (SlotMap slotMap : getMaps()) {
 			if (slotMap.getCoordX() < absisMin)
@@ -163,7 +164,7 @@ public class MapManager {
 					line.append("[ ]");
 				}
 			}
-			System.out.println(line);
+			App.getApp().getLogger().log(line.toString());
 		}
 
 //		for (int y = ordonneMax; y >= ordonneMin; y--) {

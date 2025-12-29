@@ -32,6 +32,7 @@ public class App {
         Hero hero = new Hero("Antoine", EClass.WARRIOR);
         gameManager.setHero(hero);
         gameManager.startGame(hero, mapManager);
+        logger.log("End of application.");
     }
 
 
