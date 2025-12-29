@@ -1,5 +1,7 @@
 package fr.aallouv.manager.player;
 
+import fr.aallouv.App;
+
 public class Hero {
 
 
@@ -19,6 +21,7 @@ public class Hero {
         this.speed = 1;
         this.x = 0;
         this.y = 0;
+        App.getApp().getLogger().log("Created Hero " + this.name + " of class " + this.eClass.name() + " with default stats.");
     }
 
     public Hero(String name, EClass eClass, int health, int physiqueAttack, int physiqueDefense, int psychicAttack, int psychicDefense, int speed, int x, int y) {
@@ -32,6 +35,7 @@ public class Hero {
         this.x = x;
         this.y = y;
         this.speed = speed;
+        App.getApp().getLogger().log("Created Hero " + this.name + " of class " + this.eClass.name() + " with stats: Health=" + this.health + ", PhysiqueAttack=" + this.physiqueAttack + ", PhysiqueDefense=" + this.physiqueDefense + ", PsychicAttack=" + this.psychicAttack + ", PsychicDefense=" + this.psychicDefense + ", Speed=" + this.speed + ", Position=(" + this.x + "," + this.y + ")");
     }
 
     public String getName() {
