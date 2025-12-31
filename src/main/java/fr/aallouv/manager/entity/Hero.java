@@ -8,13 +8,13 @@ public class Hero extends Entity {
     private int x, y;
 
     public Hero(String name, EClass eClass) {
-        super(name, 1, eClass.getHitPoint(), eClass.getPhysicalAttack(), eClass.getPhysicalDefense(), eClass.getPsychicAttack(), eClass.getPsychicDefense(), eClass.getSpeed());
+        super(name, 1, 0, eClass.getHitPoint(), eClass.getPhysicalAttack(), eClass.getPhysicalDefense(), eClass.getPsychicAttack(), eClass.getPsychicDefense(), eClass.getSpeed());
         this.eClass = eClass;
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName());
     }
 
-    public Hero(String name, EClass eClass, int level, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
-        super(name ,level, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
+    public Hero(String name, EClass eClass, int level, int xp, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
+        super(name ,level, xp, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
         this.eClass = eClass;
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName() + " at level " + level);
     }
@@ -41,6 +41,33 @@ public class Hero extends Entity {
 
     public void seteClass(EClass eClass) {
         this.eClass = eClass;
+    }
+
+    public int xpForNextLevel() {
+        int base = level * 1000;
+        int quadratic = (level - 1) * (level - 1) * 450;
+        return base + quadratic;
+    }
+
+
+    @Override
+    public void addXp(int xp) {
+        this.xp += xp;
+        App.getApp().getLogger().log("Hero " + this.name + " gained " + xp + " XP. Total XP: " + this.xp);
+        int xpForNextLevel = xpForNextLevel();
+        while (this.xp >= xpForNextLevel) {
+            this.xp -= xpForNextLevel;
+            this.level++;
+            this.maxHealth += 10;
+            this.health = this.maxHealth;
+            this.attack += 2;
+            this.defense += 2;
+            this.psychicAttack += 2;
+            this.psychicDefense += 2;
+            this.speed += 1;
+            App.getApp().getLogger().log("Hero " + this.name + " leveled up to level " + this.level + "!");
+            xpForNextLevel = this.level * 100;
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ public abstract class Entity {
 
     protected String name;
     protected int level;
+    protected int xp;
     protected int health;
     protected int maxHealth;
 
@@ -14,9 +15,10 @@ public abstract class Entity {
     protected int psychicDefense;
     protected int speed;
 
-    protected Entity(String name, int level, int health, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
+    protected Entity(String name, int level, int xp, int health, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
         this.name = name;
         this.level = level;
+        this.xp = xp;
         this.health = health;
         this.attack = attack;
         this.defense = defense;
@@ -74,6 +76,10 @@ public abstract class Entity {
         this.health = health;
     }
 
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
     public void setLevel(int level) {
         this.level = level;
     }
@@ -98,6 +104,10 @@ public abstract class Entity {
         this.maxHealth = maxHealth;
     }
 
+    public int getXp() {
+        return xp;
+    }
+
     public boolean isAlive() {
         return health > 0;
     }
@@ -120,7 +130,7 @@ public abstract class Entity {
         }
     }
 
-
+    public abstract void addXp(int xp);
     public abstract void onDeath();
 }
 

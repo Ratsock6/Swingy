@@ -1,7 +1,7 @@
 package fr.aallouv.manager.entity;
 
+import fr.aallouv.App;
 import fr.aallouv.manager.map.EMapRoom;
-import fr.aallouv.manager.map.SlotMap;
 
 import java.util.Random;
 
@@ -11,9 +11,10 @@ public class Monster extends Entity {
     private final int id;
 
     public Monster(String name, int level, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
-        super(name, level, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
+        super(name, level, 0, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
         this.id = monsterId;
         monsterId++;
+        App.getApp().getLogger().log("Created Monster ID[" + this.id + "]: " + name + " at level " + level);
     }
 
     public int getId() {
@@ -21,8 +22,18 @@ public class Monster extends Entity {
     }
 
     @Override
+    public void addXp(int xp) {
+        // Nothing to do for Monster
+    }
+
+    @Override
     public void onDeath() {
-        // Monster-specific death behavior can be implemented here
+        App.getApp().getLogger().log("Monster ID[" + this.id + "] " + this.name + " has been defeated.");
+        App.getApp().getGameManager().printMessage("You have defeated the " + this.name + "!");
+
+        Random random = new Random();
+        int xpGained = (level + 3) * 1000 + random.nextInt(501); // Random bonus between 0 and 500
+        App.getApp().getGameManager().getHero().addXp(xpGained);
     }
 
 
@@ -38,7 +49,6 @@ public class Monster extends Entity {
             default:
                 return new Monster("Dummy", 1, 0, 0, 0, 0, 0, 0);
         }
-
     }
 
 
