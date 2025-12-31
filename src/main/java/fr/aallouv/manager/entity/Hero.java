@@ -39,6 +39,10 @@ public class Hero extends Entity {
         return eClass;
     }
 
+    public void seteClass(EClass eClass) {
+        this.eClass = eClass;
+    }
+
     @Override
     public void onDeath() {
     }
