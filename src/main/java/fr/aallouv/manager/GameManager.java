@@ -78,9 +78,13 @@ public class GameManager {
     public void enterRoom(SlotMap slotMap) {
         printMessage("You have entered a " + slotMap.geteMapRoom().getName());
         slotMap.setVisited(true);
-        if (slotMap.geteMapRoom().isCombatRoom() && !slotMap.isMonsterDefeated()) {
-            printMessage("A wild monster appears!");
+        if (slotMap.geteMapRoom().isCombatRoom()) {
+            if (!slotMap.isMonsterDefeated())
+                printMessage("A wild monster appears!");
+            else
+                printMessage("The room is empty, the monster has already been defeated.");
         }
+
     }
 
     public void gameLoop() {
