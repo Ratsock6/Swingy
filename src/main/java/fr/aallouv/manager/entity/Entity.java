@@ -4,7 +4,8 @@ public abstract class Entity {
 
     protected String name;
     protected int level;
-    protected int hitPoints;
+    protected int health;
+    protected int maxHealth;
 
     // Stats
     protected int attack;
@@ -13,15 +14,20 @@ public abstract class Entity {
     protected int psychicDefense;
     protected int speed;
 
-    protected Entity(String name, int level, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
+    protected Entity(String name, int level, int health, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
         this.name = name;
         this.level = level;
-        this.hitPoints = hitPoints;
+        this.health = health;
         this.attack = attack;
         this.defense = defense;
         this.psychicAttack = psychicAttack;
         this.psychicDefense = psychicDefense;
         this.speed = speed;
+        this.maxHealth = health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public String getName() {
@@ -32,8 +38,12 @@ public abstract class Entity {
         return level;
     }
 
-    public int getHitPoints() {
-        return hitPoints;
+    public int getHealth() {
+        return health;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
     public int getAttack() {
@@ -52,27 +62,60 @@ public abstract class Entity {
         return psychicDefense;
     }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
 
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPsychicAttack(int psychicAttack) {
+        this.psychicAttack = psychicAttack;
+    }
+
+    public void setPsychicDefense(int psychicDefense) {
+        this.psychicDefense = psychicDefense;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 
     public boolean isAlive() {
-        return hitPoints > 0;
+        return health > 0;
     }
 
     public void takePhysicalDamage(int damage) {
         int actualDamage = Math.max(damage - defense, 0);
-        hitPoints -= actualDamage;
-        if (hitPoints < 0) {
-            hitPoints = 0;
+        health -= actualDamage;
+        if (health < 0) {
+            health = 0;
             onDeath();
         }
     }
 
     public void takePsychicDamage(int damage) {
         int actualDamage = Math.max(damage - psychicDefense, 0);
-        hitPoints -= actualDamage;
-        if (hitPoints < 0) {
-            hitPoints = 0;
+        health -= actualDamage;
+        if (health < 0) {
+            health = 0;
             onDeath();
         }
     }

@@ -2,6 +2,7 @@ package fr.aallouv.manager;
 
 import fr.aallouv.App;
 import fr.aallouv.enums.EGameViews;
+import fr.aallouv.manager.map.EMapRoom;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.map.SlotMap;
 import fr.aallouv.manager.entity.Hero;
@@ -79,10 +80,15 @@ public class GameManager {
         printMessage("You have entered a " + slotMap.geteMapRoom().getName());
         slotMap.setVisited(true);
         if (slotMap.geteMapRoom().isCombatRoom()) {
-            if (!slotMap.isMonsterDefeated())
+            if (!slotMap.getMonster().isAlive())
                 printMessage("A wild monster appears!");
             else
                 printMessage("The room is empty, the monster has already been defeated.");
+        }
+        if (slotMap.geteMapRoom() == EMapRoom.START) {
+            printMessage("This is the starting room. Prepare for your adventure!");
+            hero.setHealth(hero.getMaxHealth());
+            printMessage("Your health has been restored to " + hero.getHealth() + " HP.");
         }
     }
 

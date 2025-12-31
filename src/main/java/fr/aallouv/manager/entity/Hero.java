@@ -48,7 +48,7 @@ public class Hero extends Entity {
         App.getApp().getLogger().log("Hero " + this.name + " has died.");
         setX(0);
         setY(0);
-        this.hitPoints = eClass.getHitPoint();
+        this.health = eClass.getHitPoint();
         App.getApp().getLogger().log("Hero " + this.name + " has been respawned at starting position with full health.");
         App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getSlotMapByCoordinates(x, y));
     }
