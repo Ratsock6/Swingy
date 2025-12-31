@@ -4,7 +4,7 @@ import fr.aallouv.App;
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.map.SlotMap;
-import fr.aallouv.manager.player.Hero;
+import fr.aallouv.manager.entity.Hero;
 
 import java.util.Scanner;
 
@@ -71,7 +71,7 @@ public class GameManager {
 
         if (input.equalsIgnoreCase("toggleview")) {
             toggleGameView();
-            App.getApp().getLogger().log("Game view toggled to: " + gameViews.name());
+            App.getApp().getLogger().log("Game view toggled to: " + gameViews.getString());
         }
     }
 
@@ -84,7 +84,6 @@ public class GameManager {
             else
                 printMessage("The room is empty, the monster has already been defeated.");
         }
-
     }
 
     public void gameLoop() {

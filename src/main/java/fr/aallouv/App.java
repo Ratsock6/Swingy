@@ -3,9 +3,8 @@ package fr.aallouv;
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.GameManager;
 import fr.aallouv.manager.map.MapManager;
-import fr.aallouv.manager.player.EClass;
-import fr.aallouv.manager.player.Hero;
-import fr.aallouv.utils.GenerateRandom;
+import fr.aallouv.manager.entity.EClass;
+import fr.aallouv.manager.entity.Hero;
 import fr.aallouv.utils.Logger;
 
 import java.io.IOException;
