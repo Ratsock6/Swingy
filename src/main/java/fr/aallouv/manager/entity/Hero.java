@@ -93,7 +93,18 @@ public class Hero extends Entity {
         setY(0);
         this.health = eClass.getHitPoint();
         App.getApp().getLogger().log("Hero " + this.name + " has been respawned at starting position with full health.");
-        App.getApp().getGameManager().printMessage("You have died and been respawned at the starting position. LOOSER!");
+        App.getApp().getGameManager().printMessage("▄▄▄▄▄▄   ▄▄▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ");
+        App.getApp().getGameManager().printMessage("███▀▀██▄  ███  ███▀▀▀▀▀ ███▀▀██▄ ");
+        App.getApp().getGameManager().printMessage("███  ███  ███  ███▄▄    ███  ███ ");
+        App.getApp().getGameManager().printMessage("███  ███  ███  ███      ███  ███ ");
+        App.getApp().getGameManager().printMessage("██████▀  ▄███▄ ▀███████ ██████▀");
+        App.getApp().getGameManager().printMessage("##############################################################################");
+        App.getApp().getGameManager().printMessage("#                                                                            #");
+        App.getApp().getGameManager().printMessage("#                          You have been defeated!                           #");
+        App.getApp().getGameManager().printMessage("#               You are being respawned at the starting position.            #");
+        App.getApp().getGameManager().printMessage("#                     Your health has been restored to full.                 #");
+        App.getApp().getGameManager().printMessage("#                                                                            #");
+        App.getApp().getGameManager().printMessage("##############################################################################");
         App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getSlotMapByCoordinates(x, y));
     }
 }
