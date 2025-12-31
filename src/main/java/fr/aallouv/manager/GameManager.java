@@ -94,7 +94,6 @@ public class GameManager {
 
     public void gameLoop() {
         Scanner scanner = new Scanner(System.in);
-        hero.addXp(1000000); // For testing level up
         while (true) {
             System.out.print("> ");
             String input = scanner.nextLine();
