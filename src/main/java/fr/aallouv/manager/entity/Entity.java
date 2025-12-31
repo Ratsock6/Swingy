@@ -59,10 +59,21 @@ public abstract class Entity {
         return hitPoints > 0;
     }
 
-    public void takeDamage(int damage) {
-        hitPoints -= Math.max(0, damage);
+    public void takePhysicalDamage(int damage) {
+        int actualDamage = Math.max(damage - defense, 0);
+        hitPoints -= actualDamage;
         if (hitPoints < 0) {
             hitPoints = 0;
+            onDeath();
+        }
+    }
+
+    public void takePsychicDamage(int damage) {
+        int actualDamage = Math.max(damage - psychicDefense, 0);
+        hitPoints -= actualDamage;
+        if (hitPoints < 0) {
+            hitPoints = 0;
+            onDeath();
         }
     }
 
