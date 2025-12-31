@@ -49,6 +49,20 @@ public class Hero extends Entity {
         return base + quadratic;
     }
 
+    public String toStringStats() {
+        return "\nHero Stats:" +
+                "\nName: " + name +
+                "\nClass: " + eClass.getClassName() +
+                "\nLevel: " + level +
+                "\nXP: " + xp + "/" + xpForNextLevel() +
+                "\nHP: " + health + "/" + maxHealth +
+                "\nAttack: " + attack +
+                "\nDefense: " + defense +
+                "\nPsychic Attack: " + psychicAttack +
+                "\nPsychic Defense: " + psychicDefense +
+                "\nSpeed: " + speed;
+    }
+
 
     @Override
     public void addXp(int xp) {
@@ -66,7 +80,9 @@ public class Hero extends Entity {
             this.psychicDefense += 2;
             this.speed += 1;
             App.getApp().getLogger().log("Hero " + this.name + " leveled up to level " + this.level + "!");
-            xpForNextLevel = this.level * 100;
+            App.getApp().getGameManager().printMessage("Congratulations! " + this.name + " has reached level " + this.level + "! New stats - HP: " + this.maxHealth + ", Attack: " + this.attack + ", Defense: " + this.defense + ", Psychic Attack: " + this.psychicAttack + ", Psychic Defense: " + this.psychicDefense + ", Speed: " + this.speed);
+            App.getApp().getGameManager().printMessage("XP needed for next level: " + xpForNextLevel());
+            xpForNextLevel = xpForNextLevel();
         }
     }
 

@@ -94,10 +94,11 @@ public class GameManager {
 
     public void gameLoop() {
         Scanner scanner = new Scanner(System.in);
-
+        hero.addXp(1000000); // For testing level up
         while (true) {
             System.out.print("> ");
             String input = scanner.nextLine();
+            System.out.println("You entered: " + input);
 
             if (input.equalsIgnoreCase("exit")) {
                 System.out.println("Goodbye!");
@@ -109,7 +110,12 @@ public class GameManager {
                 break;
             }
 
-            System.out.println("You entered: " + input);
+            if (input.equalsIgnoreCase("viewStat")) {
+                printMessage(hero.toStringStats());
+            } else {
+                takeInput(input);
+            }
+
         }
         scanner.close();
     }

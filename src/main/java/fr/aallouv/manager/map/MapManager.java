@@ -72,7 +72,7 @@ public class MapManager {
 	public int getMonsterDefeatedRoomsCount() {
 		int count = 0;
 		for (SlotMap slotMap : getMaps()) {
-			if (slotMap.isMonsterDefeated()) {
+			if (slotMap.getMonster() != null && !slotMap.getMonster().isAlive()) {
 				count++;
 			}
 		}
