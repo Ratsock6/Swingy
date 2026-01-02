@@ -44,7 +44,6 @@ public class MapManager {
 			int finalY = slotMap.getCoordY() + selectedCardinalPoint.getAddY();
 			new SlotMap(selectedRoom, finalX, finalY);
 			App.getApp().getLogger().space();
-
 		}
 		for (SlotMap slotMapIter : getMaps()) {
 			App.getApp().getLogger().log("Room[" + slotMapIter.getId() + "]: " + slotMapIter.geteMapRoom().name() + " at (" + slotMapIter.getCoordX() + "," + slotMapIter.getCoordY() + ")");
