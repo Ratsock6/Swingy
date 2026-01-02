@@ -214,6 +214,11 @@ public class MapManager {
 							found = true;
 							break;
 						}
+						if (App.getApp().getGameManager().getHero().getX() == slotMap.getCoordX() && App.getApp().getGameManager().getHero().getY() == slotMap.getCoordY()) {
+							line.append("[\uD83D\uDFE2]");
+							found = true;
+							break;
+						}
 						line.append("[").append(slotMap.geteMapRoom().getSymbol()).append("]");
 						found = true;
 						break;
