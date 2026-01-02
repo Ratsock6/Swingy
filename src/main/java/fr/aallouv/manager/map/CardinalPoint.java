@@ -2,19 +2,20 @@ package fr.aallouv.manager.map;
 
 public enum CardinalPoint {
 
-	NORTH("North", 0, 1),
-	SOUTH("South", 0, -1),
-	EAST("East", 1, 0),
-	WEST("West", -1, 0);
+	NORTH("North", "n", 0, 1),
+	SOUTH("South", "s", 0, -1),
+	EAST("East", "e", 1, 0),
+	WEST("West", "w", -1, 0);
 
-	private final String string;
+	private final String string, shortString;
 	private final int addX;
 	private final int addY;
 
-	CardinalPoint(String string, int addX, int addY) {
+	CardinalPoint(String string, String shortString, int addX, int addY) {
 		this.string = string;
 		this.addX = addX;
 		this.addY = addY;
+		this.shortString = shortString;
 	}
 
 	public String toString() {
@@ -27,5 +28,14 @@ public enum CardinalPoint {
 
 	public int getAddY() {
 		return addY;
+	}
+
+	public static CardinalPoint fromString(String text) {
+		for (CardinalPoint b : CardinalPoint.values()) {
+			if (b.shortString.equalsIgnoreCase(text)) {
+				return b;
+			}
+		}
+		return null;
 	}
 }
