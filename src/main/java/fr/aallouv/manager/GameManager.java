@@ -2,11 +2,13 @@ package fr.aallouv.manager;
 
 import fr.aallouv.App;
 import fr.aallouv.enums.EGameViews;
+import fr.aallouv.manager.map.CardinalPoint;
 import fr.aallouv.manager.map.EMapRoom;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.map.SlotMap;
 import fr.aallouv.manager.entity.Hero;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameManager {
@@ -66,17 +68,73 @@ public class GameManager {
         System.out.println(message);
     }
 
-    public void takeInput(String input) {
+    public boolean takeInput(String input) {
         App.getApp().getLogger().log("[Input] " + input);
-        System.out.println("Input received: " + input);
+
+        if (input.equalsIgnoreCase("exit")) {
+            System.out.println("Goodbye!");
+            return false;
+        }
+
+
+        if (input.equalsIgnoreCase("stats")) {
+            printMessage(hero.toStringStats());
+            return true;
+        }
+
+        if (input.equalsIgnoreCase("map")) {
+            if (gameViews == EGameViews.CONSOLE) {
+                map.viewVisitedRoom();
+            }
+            return true;
+        }
 
         if (input.equalsIgnoreCase("toggleview")) {
             toggleGameView();
             App.getApp().getLogger().log("Game view toggled to: " + gameViews.getString());
+            return false;
         }
+
+        if (input.equalsIgnoreCase("help")) {
+            showHelp();
+            return true;
+        }
+
+        if (input.equalsIgnoreCase("possibility")) {
+            printPossibleCommands();
+            return true;
+        }
+
+        if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("s") ||
+            input.equalsIgnoreCase("e") || input.equalsIgnoreCase("w")) {
+            CardinalPoint direction = CardinalPoint.fromString(input);
+            if (direction == null) {
+                printMessage("Invalid direction command: " + input);
+                return true;
+            }
+            ArrayList<CardinalPoint> availableDirections = map.getCardinalPointsHeroCanMove(hero.getX(), hero.getY());
+            System.out.println(availableDirections);
+            if (!availableDirections.contains(direction)) {
+                printMessage("You can't move " + direction.toString() + " from here.");
+                return true;
+            }
+            hero.move(direction);
+            return true;
+        }
+
+
+        App.getApp().getGameManager().printMessage("Unknown command: " + input);
+        return true;
     }
 
     public void enterRoom(SlotMap slotMap) {
+        if (slotMap == null) {
+            printMessage("Error: The room you are trying to enter does not exist.");
+            hero.setX(0);
+            hero.setY(0);
+            enterRoom(map.getSlotMapByCoordinates(hero.getX(), hero.getY()));
+            return;
+        }
         printMessage("You have entered a " + slotMap.geteMapRoom().getName());
         slotMap.setVisited(true);
         if (slotMap.geteMapRoom().isCombatRoom()) {
@@ -90,31 +148,32 @@ public class GameManager {
             hero.setHealth(hero.getMaxHealth());
             printMessage("Your health has been restored to " + hero.getHealth() + " HP.");
         }
+        printPossibleCommands();
+    }
+
+    public void showHelp() {
+        printMessage("Available commands:");
+        printMessage(" - stats : Show hero statistics");
+        printMessage(" - map : Show visited rooms on the map");
+        printMessage(" - toggleview : Toggle between GUI and Console views");
+        printMessage(" - exit : Exit the game");
+        printMessage(" - possility : Show possible movement directions from current position");
+    }
+
+    public void printPossibleCommands() {
+        ArrayList<CardinalPoint> availableDirections = map.getCardinalPointsHeroCanMove(hero.getX(), hero.getY());
+        printMessage("You can move in the following directions: " + availableDirections.toString());
     }
 
     public void gameLoop() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+
             System.out.print("> ");
             String input = scanner.nextLine();
-            System.out.println("You entered: " + input);
-
-            if (input.equalsIgnoreCase("exit")) {
-                System.out.println("Goodbye!");
+            if (!takeInput(input)) {
                 break;
             }
-
-            if (input.equalsIgnoreCase("toggleview")) {
-                toggleGameView();
-                break;
-            }
-
-            if (input.equalsIgnoreCase("viewStat")) {
-                printMessage(hero.toStringStats());
-            } else {
-                takeInput(input);
-            }
-
         }
         scanner.close();
     }
