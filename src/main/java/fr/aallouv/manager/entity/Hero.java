@@ -1,6 +1,7 @@
 package fr.aallouv.manager.entity;
 
 import fr.aallouv.App;
+import fr.aallouv.manager.map.CardinalPoint;
 
 public class Hero extends Entity {
 
@@ -60,7 +61,27 @@ public class Hero extends Entity {
                 "\nDefense: " + defense +
                 "\nPsychic Attack: " + psychicAttack +
                 "\nPsychic Defense: " + psychicDefense +
-                "\nSpeed: " + speed;
+                "\nSpeed: " + speed +
+                "\nPosition: (" + x + ", " + y + ")\n";
+    }
+
+    public void move(CardinalPoint direction) {
+        switch (direction) {
+            case NORTH:
+                setY(getY() + 1);
+                break;
+            case SOUTH:
+                setY(getY() - 1);
+                break;
+            case EAST:
+                setX(getX() + 1);
+                break;
+            case WEST:
+                setX(getX() - 1);
+                break;
+        }
+        App.getApp().getLogger().log("Hero " + this.name + " moved " + direction.name() + " to position (" + this.x + ", " + this.y + ")");
+        App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getSlotMapByCoordinates(x, y));
     }
 
 
