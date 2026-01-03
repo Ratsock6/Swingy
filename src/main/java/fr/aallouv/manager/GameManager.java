@@ -1,6 +1,7 @@
 package fr.aallouv.manager;
 
 import fr.aallouv.App;
+import fr.aallouv.enums.EChoice;
 import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.map.CardinalPoint;
 import fr.aallouv.manager.map.EMapRoom;
@@ -167,6 +168,40 @@ public class GameManager {
                     hero.takePhysicalDamage(damage);
                     printMessage("You triggered a trap! You took " + damage + " damage. Current health: " + hero.getHealth());
                 }
+            }
+
+            if (slotMap.geteMapRoom() == EMapRoom.CHOICE) {
+                printMessage("You have entered a choice room. Choose your path wisely!");
+                EChoice firstChoice = EChoice.getRandomChoice();
+                EChoice secondChoice = EChoice.getRandomChoiceExclude(firstChoice);
+                printMessage("You have two choices:\n1) " + firstChoice.getDescription() + " (Cost: " + firstChoice.getCost() + ")" + "\n2) " + secondChoice.getDescription() + " (Cost: " + secondChoice.getCost() + ")");
+                printMessage("Type 1 or 2 to make your choice:");
+                Scanner scanner = new Scanner(System.in);
+                String choiceInput = scanner.nextLine();
+                EChoice chosen;
+                if (choiceInput.equals("1")) {
+                    chosen = firstChoice;
+                } else if (choiceInput.equals("2")) {
+                    chosen = secondChoice;
+                } else {
+                    printMessage("Invalid choice. Defaulting to choice 1.");
+                    chosen = firstChoice;
+                }
+
+                if (chosen.getCost() > hero.getGold()) {
+                    printMessage("You do not have enough gold for this choice. No effects applied.");
+                } else {
+                    hero.setGold(hero.getGold() - chosen.getCost());
+                    printMessage("You chose: " + chosen.getDescription() + ". Gold remaining: " + hero.getGold());
+                }
+                hero.setMaxHealth(hero.getMaxHealth() + chosen.getHealthValue());
+                hero.setHealth(hero.getHealth() + chosen.getHealthValue());
+                hero.setAttack(hero.getAttack() + chosen.getAttackValue());
+                hero.setDefense(hero.getDefense() + chosen.getDefenseValue());
+                hero.setPsychicAttack(hero.getPsychicAttack() + chosen.getPsychicAttackValue());
+                hero.setPsychicDefense(hero.getPsychicDefense() + chosen.getPsychicDefenseValue());
+                hero.setSpeed(hero.getSpeed() + chosen.getSpeedValue());
+                hero.addXp(chosen.getXpValue());
             }
         }
         printMessage("Press Enter to continue...");
