@@ -203,9 +203,27 @@ public class GameManager {
                 hero.setSpeed(hero.getSpeed() + chosen.getSpeedValue());
                 hero.addXp(chosen.getXpValue());
             }
+
+            if (slotMap.geteMapRoom() == EMapRoom.DISTORTION) {
+                slotMap.setVisited(true);
+                printMessage("You have entered a distortion room. Your position will be randomized!");
+                ArrayList<SlotMap> slotVisited = map.getVisitedRooms();
+                if (slotVisited.size() > 1) {
+                    SlotMap randomRoom;
+                    do {
+                        randomRoom = slotVisited.get(new Random().nextInt(slotVisited.size()));
+                    } while (randomRoom == slotMap);
+                    hero.setX(randomRoom.getCoordX());
+                    hero.setY(randomRoom.getCoordY());
+                    printMessage("You have been teleported to a new location: (" + hero.getX() + ", " + hero.getY() + ")");
+                    enterRoom(randomRoom);
+                } else {
+                    printMessage("No other visited rooms to teleport to. Staying in the current room.");
+                }
+            }
         }
-        printMessage("Press Enter to continue...");
         slotMap.setVisited(true);
+        printMessage("Press Enter to continue...");
         new Scanner(System.in).nextLine();
         map.viewVisitedRoom();
         printPossibleCommands();

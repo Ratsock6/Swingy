@@ -71,6 +71,16 @@ public class MapManager {
 		return count;
 	}
 
+	public ArrayList<SlotMap> getVisitedRooms() {
+		ArrayList<SlotMap> visitedRooms = new ArrayList<>();
+		for (SlotMap slotMap : getMaps()) {
+			if (slotMap.isVisited()) {
+				visitedRooms.add(slotMap);
+			}
+		}
+		return visitedRooms;
+	}
+
 	public int getMonsterDefeatedRoomsCount() {
 		int count = 0;
 		for (SlotMap slotMap : getMaps()) {
