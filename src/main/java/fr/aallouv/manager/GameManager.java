@@ -147,12 +147,8 @@ public class GameManager {
             hero.setHealth(hero.getMaxHealth());
             printMessage("Your health has been restored to " + hero.getHealth() + " HP.");
         }
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            printMessage("Press Enter to continue...");
-            scanner.nextLine();
-            break;
-        }
+        printMessage("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
         map.viewVisitedRoom();
         printPossibleCommands();
     }
