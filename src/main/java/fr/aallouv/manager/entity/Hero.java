@@ -7,16 +7,21 @@ public class Hero extends Entity {
 
     private EClass eClass;
     private int x, y;
+    private int gold;
 
     public Hero(String name, EClass eClass) {
         super(name, 1, 0, eClass.getHitPoint(), eClass.getPhysicalAttack(), eClass.getPhysicalDefense(), eClass.getPsychicAttack(), eClass.getPsychicDefense(), eClass.getSpeed());
         this.eClass = eClass;
+        this.gold = 0;
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName());
     }
 
-    public Hero(String name, EClass eClass, int level, int xp, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed) {
+    public Hero(String name, EClass eClass, int level, int xp, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed, int x, int y, int gold) {
         super(name ,level, xp, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
         this.eClass = eClass;
+        this.x = x;
+        this.y = y;
+        this.gold = gold;
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName() + " at level " + level);
     }
 
@@ -36,6 +41,14 @@ public class Hero extends Entity {
         this.y = y;
     }
 
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
     public EClass geteClass() {
         return eClass;
     }
@@ -53,6 +66,7 @@ public class Hero extends Entity {
     public String toStringStats() {
         return "\nHero Stats:" +
                 "\nName: " + name +
+                "\nGold: " + gold +
                 "\nClass: " + eClass.getClassName() +
                 "\nLevel: " + level +
                 "\nXP: " + xp + "/" + xpForNextLevel() +
@@ -100,8 +114,10 @@ public class Hero extends Entity {
             this.psychicAttack += 2;
             this.psychicDefense += 2;
             this.speed += 1;
+            this.gold += 100;
             App.getApp().getLogger().log("Hero " + this.name + " leveled up to level " + this.level + "!");
             App.getApp().getGameManager().printMessage("Congratulations! " + this.name + " has reached level " + this.level + "! New stats - HP: " + this.maxHealth + ", Attack: " + this.attack + ", Defense: " + this.defense + ", Psychic Attack: " + this.psychicAttack + ", Psychic Defense: " + this.psychicDefense + ", Speed: " + this.speed);
+            App.getApp().getGameManager().printMessage("You received 100 gold for leveling up! Current gold: " + this.gold);
             App.getApp().getGameManager().printMessage("XP needed for next level: " + xpForNextLevel());
             xpForNextLevel = xpForNextLevel();
         }
