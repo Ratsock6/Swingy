@@ -69,7 +69,6 @@ public class GameManager {
     }
 
     public boolean takeInput(String input) {
-        App.getApp().getLogger().log("[Input] " + input);
 
         if (input.equalsIgnoreCase("exit")) {
             System.out.println("Goodbye!");
@@ -148,6 +147,13 @@ public class GameManager {
             hero.setHealth(hero.getMaxHealth());
             printMessage("Your health has been restored to " + hero.getHealth() + " HP.");
         }
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            printMessage("Press Enter to continue...");
+            scanner.nextLine();
+            break;
+        }
+        map.viewVisitedRoom();
         printPossibleCommands();
     }
 
@@ -168,8 +174,7 @@ public class GameManager {
     public void gameLoop() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-
-            System.out.print("> ");
+            System.out.println("> ");
             String input = scanner.nextLine();
             if (!takeInput(input)) {
                 break;
