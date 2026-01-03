@@ -9,6 +9,7 @@ import fr.aallouv.manager.map.SlotMap;
 import fr.aallouv.manager.entity.Hero;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameManager {
@@ -135,19 +136,41 @@ public class GameManager {
             return;
         }
         printMessage("You have entered a " + slotMap.geteMapRoom().getName());
-        slotMap.setVisited(true);
-        if (slotMap.geteMapRoom().isCombatRoom()) {
-            if (slotMap.getMonster().isAlive())
-                printMessage("A wild monster appears!");
-            else
-                printMessage("The room is empty, the monster has already been defeated.");
+        if (slotMap.isVisited()) {
+            printMessage("You have been here before.");
         }
-        if (slotMap.geteMapRoom() == EMapRoom.START) {
-            printMessage("This is the starting room. Prepare for your adventure!");
-            hero.setHealth(hero.getMaxHealth());
-            printMessage("Your health has been restored to " + hero.getHealth() + " HP.");
+        if (!slotMap.isVisited()) {
+            if (slotMap.geteMapRoom().isCombatRoom()) {
+                if (slotMap.getMonster().isAlive())
+                    printMessage("A wild monster appears!");
+                else
+                    printMessage("The room is empty, the monster has already been defeated.");
+            }
+            if (slotMap.geteMapRoom() == EMapRoom.START) {
+                printMessage("This is the starting room. Prepare for your adventure!");
+            }
+            if (slotMap.geteMapRoom() == EMapRoom.REST) {
+                printMessage("You found a rest room. Your health is fully restored!");
+                hero.setHealth(hero.getMaxHealth());
+            }
+            if (slotMap.geteMapRoom() == EMapRoom.TREASURE) {
+                hero.setGold(hero.getGold() + new Random().nextInt(100) + 50);
+                printMessage("You found a treasure room! You gained some gold. Current gold: " + hero.getGold());
+            }
+            if (slotMap.geteMapRoom() == EMapRoom.TRAP) {
+                int esquiveChance = new Random().nextInt(100);
+                App.getApp().getLogger().log("Trap triggered! Esquive chance: " + esquiveChance + ", Hero speed: " + hero.getSpeed() + ", Active: " + (esquiveChance < hero.getSpeed()));
+                if (esquiveChance < hero.getSpeed()) {
+                    printMessage("You triggered a trap but managed to evade it thanks to your speed! No damage taken.");
+                } else {
+                    int damage = new Random().nextInt(20) + 10;
+                    hero.takePhysicalDamage(damage);
+                    printMessage("You triggered a trap! You took " + damage + " damage. Current health: " + hero.getHealth());
+                }
+            }
         }
         printMessage("Press Enter to continue...");
+        slotMap.setVisited(true);
         new Scanner(System.in).nextLine();
         map.viewVisitedRoom();
         printPossibleCommands();
