@@ -95,7 +95,7 @@ public class Hero extends Entity {
                 break;
         }
         App.getApp().getLogger().log("Hero " + this.name + " moved " + direction.name() + " to position (" + this.x + ", " + this.y + ")");
-        App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getSlotMapByCoordinates(x, y));
+        App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getRoomByCoord(x, y));
     }
 
 
@@ -142,6 +142,6 @@ public class Hero extends Entity {
         App.getApp().getGameManager().printMessage("#                     Your health has been restored to full.                 #");
         App.getApp().getGameManager().printMessage("#                                                                            #");
         App.getApp().getGameManager().printMessage("##############################################################################");
-        App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getSlotMapByCoordinates(x, y));
+        App.getApp().getGameManager().enterRoom(App.getApp().getGameManager().getMapManager().getRoomByCoord(x, y));
     }
 }
