@@ -128,6 +128,20 @@ public class GameManager {
 
     public void enterRoom(Room room) {
         // TODO: Implement room entering logic
+        if (room == null) {
+            printMessage("Error: The room you are trying to enter does not exist.");
+            hero.setX(0);
+            hero.setY(0);
+            enterRoom(map.getRoomByCoord(hero.getX(), hero.getY()));
+            return;
+        }
+        printMessage("You have entered a " + room.getName());
+        room.onEnter();
+        room.markVisited();
+        printMessage("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
+        map.viewVisitedRoom();
+        printPossibleCommands();
 //        if (slotMap == null) {
 //            printMessage("Error: The room you are trying to enter does not exist.");
 //            hero.setX(0);
