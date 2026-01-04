@@ -1,7 +1,5 @@
 package fr.aallouv.enums;
 
-import fr.aallouv.manager.entity.Hero;
-
 import java.util.ArrayList;
 
 public enum EChoice {
