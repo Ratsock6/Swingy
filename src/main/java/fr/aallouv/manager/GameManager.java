@@ -126,7 +126,6 @@ public class GameManager {
     }
 
     public void enterRoom(Room room) {
-        // TODO: Implement room entering logic
         if (room == null) {
             printMessage("Error: The room you are trying to enter does not exist.");
             hero.setX(0);
@@ -135,8 +134,8 @@ public class GameManager {
             return;
         }
         printMessage("You have entered a " + room.getName());
-        room.markVisited();
         room.onEnter();
+        room.markVisited();
         printMessage("Press Enter to continue...");
         new Scanner(System.in).nextLine();
         map.viewVisitedRoom();
@@ -174,8 +173,8 @@ public class GameManager {
         this.map = map;
         App.getApp().getLogger().log("Game started with Hero: " + hero.getName() + " and Map with " + map.getMaps().size() + " rooms.");
         printMessage("Game started! Welcome " + hero.getName() + "!");
-//        SlotMap actualSlotMap = getMapManager().getSlotMapByCoordinates(hero.getX(), hero.getY());
-//        enterRoom(actualSlotMap);
+        Room room = getMapManager().getRoomByCoord(hero.getX(), hero.getY());
+        enterRoom(room);
         gameLoop();
     }
 }
