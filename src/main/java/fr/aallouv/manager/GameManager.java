@@ -5,10 +5,9 @@ import fr.aallouv.enums.EGameViews;
 import fr.aallouv.manager.map.CardinalPoint;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.entity.Hero;
-import fr.aallouv.manager.map.slotMap.Room;
+import fr.aallouv.manager.map.room.Room;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class GameManager {

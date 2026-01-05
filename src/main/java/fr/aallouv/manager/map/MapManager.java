@@ -1,8 +1,8 @@
 package fr.aallouv.manager.map;
 
 import fr.aallouv.App;
-import fr.aallouv.manager.map.slotMap.Room;
-import fr.aallouv.manager.map.slotMap.StartRoom;
+import fr.aallouv.manager.map.room.Room;
+import fr.aallouv.manager.map.room.StartRoom;
 
 import java.util.ArrayList;
 import java.util.Random;

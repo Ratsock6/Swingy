@@ -1,4 +1,4 @@
-package fr.aallouv.manager.map.slotMap;
+package fr.aallouv.manager.map.room;
 
 import fr.aallouv.App;
 import fr.aallouv.manager.map.EMapRoom;
