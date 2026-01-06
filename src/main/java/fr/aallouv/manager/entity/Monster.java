@@ -45,7 +45,7 @@ public class Monster extends Entity {
             case ELITE:
                 return new Monster("Orc", rand.nextInt(3) + 3, rand.nextInt(100) + 50, rand.nextInt(20) + 10, rand.nextInt(10) + 5, rand.nextInt(10) + 5, rand.nextInt(10) + 5, rand.nextInt(15) + 5);
             case BOSS:
-                return new Monster("Boss", 10, rand.nextInt(200) + 100, rand.nextInt(30) + 20, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(20) + 10);
+                return new Monster("Dragon", 10, rand.nextInt(200) + 100, rand.nextInt(30) + 20, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(20) + 10);
             default:
                 return new Monster("Dummy", 1, 0, 0, 0, 0, 0, 0);
         }
