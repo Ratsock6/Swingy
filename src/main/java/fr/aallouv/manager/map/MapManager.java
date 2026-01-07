@@ -45,12 +45,29 @@ public class MapManager {
 			App.getApp().getLogger().log("Added new room of type " + selectedRoom.name() + " at (" + finalX + "," + finalY + ")");
 			App.getApp().getLogger().space();
 		}
+
+		addUniqueRoom(EMapRoom.BOSS);
+		addUniqueRoom(EMapRoom.EXIT);
+
 		for (Room roomIter : getMaps()) {
 			App.getApp().getLogger().log("Room[" + roomIter.getId() + "]: " + roomIter.getName() + " at (" + roomIter.getX() + "," + roomIter.getY() + ")");
 		}
 
 		printMapInLogFile();
 		App.getApp().getLogger().log("Initial map generation complete. Total rooms generated: " + getMaps().size());
+	}
+
+	public void addUniqueRoom(EMapRoom eMapRoom) {
+		Room room = getAvailableRoom().get(new Random().nextInt(getAvailableRoom().size()));
+		App.getApp().getLogger().log("Selected SlotMap ID[" + room.getId() + "] to add new room.");
+		ArrayList<CardinalPoint> cardinalPointsAvailable = getCardinalPointsAvailable(room.getX(), room.getY());
+		App.getApp().getLogger().log("Available cardinal points to add new room: " + cardinalPointsAvailable.toString());
+		CardinalPoint selectedCardinalPoint = cardinalPointsAvailable.get(new Random().nextInt(cardinalPointsAvailable.size()));
+		App.getApp().getLogger().log("Selected cardinal point: " + selectedCardinalPoint.name());
+		int finalX = room.getX() + selectedCardinalPoint.getAddX();
+		int finalY = room.getY() + selectedCardinalPoint.getAddY();
+		Room.createRoom(finalX, finalY, eMapRoom);
+		App.getApp().getLogger().log("Added new room of type " + eMapRoom.getName() + " at (" + finalX + "," + finalY + ")");
 	}
 
 	public int getNumberOfRoom() {
