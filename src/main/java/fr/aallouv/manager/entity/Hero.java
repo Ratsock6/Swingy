@@ -6,7 +6,7 @@ import fr.aallouv.manager.map.CardinalPoint;
 public class Hero extends Entity {
 
     private EClass eClass;
-    private int x, y;
+    private int x, y, lastX, lastY;
     private int gold;
 
     public Hero(String name, EClass eClass) {
@@ -16,11 +16,13 @@ public class Hero extends Entity {
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName());
     }
 
-    public Hero(String name, EClass eClass, int level, int xp, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed, int x, int y, int gold) {
+    public Hero(String name, EClass eClass, int level, int xp, int hitPoints, int attack, int defense, int psychicAttack, int psychicDefense, int speed, int x, int y, int lastX, int lastY, int gold) {
         super(name ,level, xp, hitPoints, attack, defense, psychicAttack, psychicDefense, speed);
         this.eClass = eClass;
         this.x = x;
         this.y = y;
+        this.lastX = lastX;
+        this.lastY = lastY;
         this.gold = gold;
         App.getApp().getLogger().log("Created Hero: " + name + " of class " + eClass.getClassName() + " at level " + level);
     }
@@ -30,6 +32,7 @@ public class Hero extends Entity {
     }
 
     public void setX(int x) {
+        lastX = this.x;
         this.x = x;
     }
 
@@ -38,6 +41,7 @@ public class Hero extends Entity {
     }
 
     public void setY(int y) {
+        lastY = this.y;
         this.y = y;
     }
 
@@ -47,6 +51,22 @@ public class Hero extends Entity {
 
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public int getLastX() {
+        return lastX;
+    }
+
+    public int getLastY() {
+        return lastY;
+    }
+
+    public void setLastX(int lastX) {
+        this.lastX = lastX;
+    }
+
+    public void setLastY(int lastY) {
+        this.lastY = lastY;
     }
 
     public EClass geteClass() {
@@ -128,6 +148,8 @@ public class Hero extends Entity {
         App.getApp().getLogger().log("Hero " + this.name + " has died.");
         setX(0);
         setY(0);
+        setLastX(0);
+        setLastY(0);
         this.health = eClass.getHitPoint();
         App.getApp().getLogger().log("Hero " + this.name + " has been respawned at starting position with full health.");
         App.getApp().getGameManager().printMessage("▄▄▄▄▄▄   ▄▄▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ");
