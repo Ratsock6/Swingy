@@ -130,6 +130,18 @@ public abstract class Entity {
         }
     }
 
+    public String getStats() {
+        return "\nHero Stats:" +
+                "\nName: " + name +
+                "\nLevel: " + level +
+                "\nHP: " + health + "/" + maxHealth +
+                "\nAttack: " + attack +
+                "\nDefense: " + defense +
+                "\nPsychic Attack: " + psychicAttack +
+                "\nPsychic Defense: " + psychicDefense +
+                "\nSpeed: " + speed;
+    }
+
     public abstract void addXp(int xp);
     public abstract void onDeath();
 }

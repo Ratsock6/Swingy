@@ -29,6 +29,10 @@ public class CombatManager {
         boolean heroStarts = hero.getSpeed() >= monster.getSpeed();
         boolean alreadyFled = false;
         App.getApp().getLogger().log("Combat started between Hero and Monster ID[" + monster.getId() + "], Hero starts: " + heroStarts);
+        App.getApp().getGameManager().printMessage(monster.getStats());
+        App.getApp().getGameManager().printMessage("------");
+        App.getApp().getGameManager().printMessage(hero.toStringStats());
+        App.getApp().getGameManager().printMessage("A wild " + monster.getName() + " appears!");
 
         while (true) {
             Entity starter = heroStarts ? hero : monster;
@@ -46,7 +50,7 @@ public class CombatManager {
 
                 if (input.equals("1")) {
                     monster.takePhysicalDamage(hero.getAttack());
-                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getAttack(), 1) + " physical damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
+                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getAttack() - monster.getDefense(), 1) + " physical damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
                     if (!monster.isAlive()) {
                         monster.onDeath();
                         App.getApp().getLogger().log("Monster ID[" + monster.getId() + "] defeated by Hero.");
@@ -54,7 +58,7 @@ public class CombatManager {
                     }
                 } else if (input.equals("2")) {
                     monster.takePsychicDamage(hero.getPsychicAttack());
-                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getPsychicAttack(), 1) + " psychic damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
+                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getPsychicAttack() - monster.getPsychicDefense(), 1) + " psychic damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
                     if (!monster.isAlive()) {
                         monster.onDeath();
                         App.getApp().getLogger().log("Monster ID[" + monster.getId() + "] defeated by Hero.");

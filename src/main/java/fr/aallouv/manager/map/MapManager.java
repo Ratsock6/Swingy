@@ -231,7 +231,7 @@ public class MapManager {
 							break;
 						}
 						if (App.getApp().getGameManager().getHero().getX() == slotMap.getX() && App.getApp().getGameManager().getHero().getY() == slotMap.getY()) {
-							line.append("[\uD83D\uDFE2]");
+							line.append("[●]");
 							found = true;
 							break;
 						}

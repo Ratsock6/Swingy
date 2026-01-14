@@ -41,11 +41,32 @@ public class Monster extends Entity {
         Random rand = new Random();
         switch (eMapRoom) {
             case COMBAT:
-                return new Monster("Goblin", rand.nextInt(5), rand.nextInt(50) + 1, rand.nextInt(10) + 1, rand.nextInt(5) + 1, rand.nextInt(5) + 1, rand.nextInt(5) + 1, rand.nextInt(10) + 1);
+                return new Monster("Goblin",
+                        rand.nextInt(5) + 1,
+                        rand.nextInt(150) + 1,
+                        rand.nextInt(5) + 1,
+                        rand.nextInt(50) + 1,
+                        rand.nextInt(35) + 1,
+                        rand.nextInt(35) + 1,
+                        rand.nextInt(10) + 1);
             case ELITE:
-                return new Monster("Orc", rand.nextInt(3) + 3, rand.nextInt(100) + 50, rand.nextInt(20) + 10, rand.nextInt(10) + 5, rand.nextInt(10) + 5, rand.nextInt(10) + 5, rand.nextInt(15) + 5);
+                return new Monster("Orc",
+                        rand.nextInt(5) + 5,
+                        rand.nextInt(300) + 50,
+                        rand.nextInt(100) + 10,
+                        Math.max(rand.nextInt(50) + 5, 50),
+                        rand.nextInt(100) + 5,
+                        rand.nextInt(55) + 5,
+                        rand.nextInt(50) + 5);
             case BOSS:
-                return new Monster("Dragon", 10, rand.nextInt(200) + 100, rand.nextInt(30) + 20, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(15) + 10, rand.nextInt(20) + 10);
+                return new Monster("Dragon",
+                        10,
+                        rand.nextInt(200) + 100,
+                        rand.nextInt(200) + 20,
+                        Math.max(rand.nextInt(100) + 10, 50),
+                        rand.nextInt(200) + 10,
+                        rand.nextInt(75) + 10,
+                        rand.nextInt(50) + 10);
             default:
                 return new Monster("Dummy", 1, 0, 0, 0, 0, 0, 0);
         }
