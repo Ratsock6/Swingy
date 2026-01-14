@@ -128,7 +128,7 @@ public class Hero extends Entity {
             this.xp -= xpForNextLevel;
             this.level++;
             this.maxHealth += 10;
-            this.health = this.maxHealth;
+            this.health += 10;
             this.attack += 2;
             this.defense += 2;
             this.psychicAttack += 2;
