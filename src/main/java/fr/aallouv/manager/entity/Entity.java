@@ -113,7 +113,7 @@ public abstract class Entity {
     }
 
     public void takePhysicalDamage(int damage) {
-        int actualDamage = Math.max(damage - defense, 0);
+        int actualDamage = Math.max(damage - defense, 1);
         health -= actualDamage;
         if (health < 0) {
             health = 0;
@@ -122,7 +122,7 @@ public abstract class Entity {
     }
 
     public void takePsychicDamage(int damage) {
-        int actualDamage = Math.max(damage - psychicDefense, 0);
+        int actualDamage = Math.max(damage - psychicDefense, 1);
         health -= actualDamage;
         if (health < 0) {
             health = 0;
