@@ -46,7 +46,7 @@ public class CombatManager {
 
                 if (input.equals("1")) {
                     monster.takePhysicalDamage(hero.getAttack());
-                    App.getApp().getGameManager().printMessage("You dealt " + hero.getAttack() + " physical damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
+                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getAttack(), 1) + " physical damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
                     if (!monster.isAlive()) {
                         monster.onDeath();
                         App.getApp().getLogger().log("Monster ID[" + monster.getId() + "] defeated by Hero.");
@@ -54,7 +54,7 @@ public class CombatManager {
                     }
                 } else if (input.equals("2")) {
                     monster.takePsychicDamage(hero.getPsychicAttack());
-                    App.getApp().getGameManager().printMessage("You dealt " + hero.getPsychicAttack() + " psychic damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
+                    App.getApp().getGameManager().printMessage("You dealt " + Math.max(hero.getPsychicAttack(), 1) + " psychic damage to the " + monster.getName() + "." + " Monster HP: " + monster.getHealth() + "/" + monster.getMaxHealth());
                     if (!monster.isAlive()) {
                         monster.onDeath();
                         App.getApp().getLogger().log("Monster ID[" + monster.getId() + "] defeated by Hero.");
