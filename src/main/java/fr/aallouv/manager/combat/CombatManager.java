@@ -35,6 +35,8 @@ public class CombatManager {
         App.getApp().getGameManager().printMessage("A wild " + monster.getName() + " appears!");
 
         while (true) {
+            if (!hero.isAlive())
+                return ECombatStatus.DEFEAT;
             Entity starter = heroStarts ? hero : monster;
             Entity receiver = heroStarts ? monster : hero;
             App.getApp().getLogger().log(starter.getName() + " starts the turn against " + receiver.getName());

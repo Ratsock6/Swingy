@@ -131,7 +131,7 @@ public abstract class Entity {
     }
 
     public String getStats() {
-        return "\nHero Stats:" +
+        return
                 "\nName: " + name +
                 "\nLevel: " + level +
                 "\nHP: " + health + "/" + maxHealth +
