@@ -1,12 +1,15 @@
 package fr.aallouv;
 
 import fr.aallouv.enums.EGameViews;
+import fr.aallouv.gui.MainGUI;
 import fr.aallouv.manager.GameManager;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.entity.EClass;
 import fr.aallouv.manager.entity.Hero;
 import fr.aallouv.utils.Logger;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 
@@ -24,14 +27,28 @@ public class App {
             numberOfRoom = 7;
             logger.log("[INFO] Incorrect number of room. Minimum 7.");
         }
+
         gameManager = new GameManager(gameViews, numberOfRoom);
         MapManager mapManager = new MapManager();
         gameManager.setMap(mapManager);
         mapManager.initMap();
         Hero hero = new Hero("Antoine", EClass.WARRIOR);
         gameManager.setHero(hero);
-        gameManager.startGame(hero, mapManager);
+        //gameManager.startGame(hero, mapManager);
         logger.log("End of application.");
+
+        JFrame f = new JFrame("ma fenetre");
+        f.setSize(1000,1000);
+        JButton b = new JButton("1");
+        b.setBounds(250, 0, 200, 200);
+        f.add(b);
+        JButton b2 = new JButton("2");
+        b2.setBounds(0, 0, 200, 200);
+        b2.setSize(200, 200);
+        f.add(b2);
+
+
+        f.setVisible(true);
     }
 
 
