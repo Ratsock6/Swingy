@@ -81,9 +81,7 @@ public class GameManager {
         }
 
         if (input.equalsIgnoreCase("map")) {
-            if (gameViews == EGameViews.CONSOLE) {
-                map.viewVisitedRoom();
-            }
+            map.viewVisitedRoom();
             return true;
         }
 
