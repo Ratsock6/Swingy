@@ -1,4 +1,4 @@
-package fr.aallouv.manager.windows;
+package fr.aallouv.gui.utils;
 
 import javax.swing.*;
 import java.io.IOException;

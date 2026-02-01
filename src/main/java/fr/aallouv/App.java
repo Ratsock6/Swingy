@@ -1,18 +1,14 @@
 package fr.aallouv;
 
 import fr.aallouv.enums.EGameViews;
-import fr.aallouv.gui.MainGUI;
+import fr.aallouv.gui.GameWindow;
+import fr.aallouv.gui.ViewManager;
 import fr.aallouv.manager.GameManager;
 import fr.aallouv.manager.map.MapManager;
 import fr.aallouv.manager.entity.EClass;
 import fr.aallouv.manager.entity.Hero;
-import fr.aallouv.manager.windows.WindowsManager;
 import fr.aallouv.utils.Logger;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 
@@ -21,7 +17,7 @@ public class App {
     private static App app;
     private final Logger logger;
     private final GameManager gameManager;
-    private final WindowsManager windowsManager;
+    private final GameWindow gameWindow;
 
     public App(EGameViews gameViews, int numberOfRoom) throws IOException {
         app = this;
@@ -38,7 +34,8 @@ public class App {
         mapManager.initMap();
         Hero hero = new Hero("Antoine", EClass.WARRIOR);
         gameManager.setHero(hero);
-        windowsManager = new WindowsManager();
+        gameWindow = new GameWindow();
+        gameWindow.showView(ViewManager.ViewType.GAME);
         gameManager.startGame(hero, mapManager);
 
         logger.log("End of application.");
@@ -77,7 +74,7 @@ public class App {
         return gameManager;
     }
 
-    public WindowsManager getWindowsManager() {
-        return windowsManager;
+    public GameWindow getGameWindow() {
+        return gameWindow;
     }
 }
