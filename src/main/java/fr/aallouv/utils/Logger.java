@@ -12,6 +12,11 @@ public class Logger {
     private final FileWriter writer;
 
     public Logger() throws IOException {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            writer = null;
+            return;
+        }
         File jarDir = getJarDirectory();
 
         File logDir = new File(jarDir, "logs_swingy");
@@ -27,6 +32,10 @@ public class Logger {
     }
 
     public void log(String log) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            return;
+        }
         String finalLogMessage = LocalDateTime.now().toString() + " [LOGS]: " + log + "\n";
         try {
             writer.write(finalLogMessage);
@@ -37,6 +46,10 @@ public class Logger {
     }
 
     public void space() {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            return;
+        }
         try {
             writer.write("\n");
             writer.flush();
