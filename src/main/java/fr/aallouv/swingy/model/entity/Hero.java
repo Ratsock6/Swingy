@@ -29,8 +29,6 @@ public class Hero extends Entity {
         this.maxHitPoints = this.hitPoints;
         this.attack = builder.heroClass.baseAttack  + (builder.level - 1) * 2;
         this.defense = builder.heroClass.baseDefense + (builder.level - 1) * 2;
-        this.psychicAttack = builder.heroClass.basePsychicAttack;
-        this.psychicDefense = builder.heroClass.basePsychicDefense;
     }
 
     // --- Expérience et niveau ---

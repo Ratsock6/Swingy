@@ -8,8 +8,6 @@ public abstract class Entity {
     protected int    maxHitPoints;
     protected int    attack;
     protected int    defense;
-    protected int    psychicAttack;
-    protected int    psychicDefense;
 
     public boolean isAlive() {
         return hitPoints > 0;
@@ -27,12 +25,20 @@ public abstract class Entity {
     public int    getMaxHitPoints()   { return maxHitPoints; }
     public int    getAttack()         { return attack; }
     public int    getDefense()        { return defense; }
-    public int    getPsychicAttack()  { return psychicAttack; }
-    public int    getPsychicDefense() { return psychicDefense; }
+    public void setMaxHitPoints(int maxHp) { this.maxHitPoints = maxHp; }
 
     // --- Setters ---
 
     public void setHitPoints(int hp)  { this.hitPoints = Math.max(0, hp); }
     public void setAttack(int v)      { this.attack = v; }
     public void setDefense(int v)     { this.defense = v; }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

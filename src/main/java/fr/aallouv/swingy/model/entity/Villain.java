@@ -11,8 +11,6 @@ public class Villain extends Entity {
         this.maxHitPoints = hp;
         this.attack = attack;
         this.defense = defense;
-        this.psychicAttack = psychicAttack;
-        this.psychicDefense = psychicDefense;
         this.experienceReward = experienceReward;
     }
 
