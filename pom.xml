@@ -50,7 +50,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>fr.aallouv.App</mainClass>
+                            <mainClass>fr.aallouv.swingy.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -71,7 +71,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>fr.aallouv.App</mainClass>
+                                    <mainClass>fr.aallouv.swingy.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

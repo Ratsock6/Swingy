@@ -1,15 +1,13 @@
-package fr.aallouv;
+package fr.aallouv.swingy;
 
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
 /**
  * Unit tests for App
  */
-public class AppTest {
+public class MainTest {
     @Test
     public void testAppExists() throws IOException {
     }
