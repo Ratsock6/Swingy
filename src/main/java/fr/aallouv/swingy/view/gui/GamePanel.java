@@ -149,6 +149,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
         log("→ F pour combattre, R pour fuir.");
         waitingForCombatChoice = true;
         refreshMinimap();
+        requestFocusInWindow();
     }
 
     @Override
@@ -165,7 +166,10 @@ public class GamePanel extends JPanel implements View, KeyListener {
     public void showArtifactDrop(Artifact artifact) {
         log("★ Artefact trouvé : " + artifact);
         log("→ E pour équiper, I pour ignorer.");
+        waitingForCombatChoice = false;
         waitingForArtifactChoice = true;
+        refreshMinimap();
+        requestFocusInWindow();
     }
 
     @Override

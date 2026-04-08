@@ -102,11 +102,14 @@ public class GameController {
     // --- Callbacks des salles ---
 
     public void onEnterStart() {
+        view.showMessage("Vous essayez de rentrer dans la salle : Start");
         view.showMessage("Vous êtes à la salle de départ.");
         showCurrentRoom();
     }
 
     public void onEnterCombat(CombatRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Combat");
         Villain villain = engine.generateVillain(state.getHero().getLevel());
         view.showVillainEncounter(villain);
         pendingVillain = villain;
@@ -114,6 +117,8 @@ public class GameController {
     }
 
     public void onEnterElite(EliteRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Elite");
         Villain villain = engine.generateElite(state.getHero().getLevel());
         view.showVillainEncounter(villain);
         pendingVillain = villain;
@@ -121,6 +126,8 @@ public class GameController {
     }
 
     public void onEnterBoss(BossRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Boss");
         Villain villain = engine.generateBoss(state.getHero().getLevel());
         view.showVillainEncounter(villain);
         pendingVillain = villain;
@@ -128,6 +135,8 @@ public class GameController {
     }
 
     public void onEnterExit(ExitRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Exit");
         if (!state.isBossDefeated()) {
             view.showMessage("La sortie est bloquée. Vous devez d'abord vaincre le boss.");
             showCurrentRoom();
@@ -140,30 +149,34 @@ public class GameController {
     }
 
     public void onEnterRest(RestRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Rest");
         int healed = engine.computeHeal(state.getHero());
         view.showMessage("Vous vous reposez et récupérez " + healed + " HP.");
-        showCurrentRoom();
     }
 
     public void onEnterTrap(TrapRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Trap");
         int damage = engine.computeTrapDamage(state.getHero());
         state.getHero().takeDamage(damage);
         view.showMessage("Un piège ! Vous perdez " + damage + " HP.");
         if (!state.getHero().isAlive()) {
             state.setGameOver(true);
             view.showGameOver(false);
-        } else {
-            showCurrentRoom();
         }
     }
 
     public void onEnterChoice(ChoiceRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Choice");
         view.showMessage("Salle de choix — non implémentée pour l'instant.");
         room.setResolved(true);
-        showCurrentRoom();
     }
 
     public void onEnterDistortion(DistortionRoom room) {
+        showCurrentRoom();
+        view.showMessage("Vous essayez de rentrer dans la salle : Distortion");
         List<Room> visited = new ArrayList<>();
         GameMap map = state.getMap();
         for (int x = 0; x < map.getSize(); x++) {
