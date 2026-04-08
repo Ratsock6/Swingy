@@ -1,5 +1,6 @@
 package fr.aallouv.swingy.view.gui;
 
+import fr.aallouv.swingy.ViewSwitcher;
 import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.model.artifact.Artifact;
 import fr.aallouv.swingy.model.entity.Hero;
@@ -23,6 +24,8 @@ public class GamePanel extends JPanel implements View, KeyListener {
     private final JTextArea logArea;
     private final JLabel statsLabel;
     private final JLabel roomLabel;
+    private ViewSwitcher switcher;
+    private final MinimapPanel minimapPanel;
 
     private boolean waitingForCombatChoice;
     private boolean waitingForArtifactChoice;
@@ -42,18 +45,21 @@ public class GamePanel extends JPanel implements View, KeyListener {
 
         // --- Zone droite : stats + logs ---
         JPanel rightPanel = new JPanel(new BorderLayout(5, 5));
-        rightPanel.setPreferredSize(new Dimension(360, 0));
         rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 10));
 
         // Stats
         statsLabel = new JLabel("<html>Stats...</html>");
         statsLabel.setVerticalAlignment(SwingConstants.TOP);
         statsLabel.setBorder(BorderFactory.createTitledBorder("Héros"));
-        statsLabel.setPreferredSize(new Dimension(340, 150));
+        statsLabel.setPreferredSize(new Dimension(260, 150));
 
         // Type de salle
         roomLabel = new JLabel("Salle : -");
         roomLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        // Minimap
+        minimapPanel = new MinimapPanel();
+        minimapPanel.setPreferredSize(new Dimension(260, 260));
 
         // Logs
         logArea = new JTextArea();
@@ -64,24 +70,32 @@ public class GamePanel extends JPanel implements View, KeyListener {
         JScrollPane scrollPane = new JScrollPane(logArea);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Journal"));
 
-        // Instructions clavier
+        // Instructions
         JLabel keysLabel = new JLabel(
                 "<html><center>↑ Nord &nbsp; ↓ Sud &nbsp; ← Ouest &nbsp; → Est<br>" +
                         "F : Combattre &nbsp; R : Fuir &nbsp; E : Équiper &nbsp; I : Ignorer<br>" +
-                        "S : Stats &nbsp; M : Menu</center></html>",
+                        "S : Stats &nbsp; M : Menu &nbsp; C : Console</center></html>",
                 SwingConstants.CENTER
         );
         keysLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-        rightPanel.add(statsLabel, BorderLayout.NORTH);
-        rightPanel.add(roomLabel, BorderLayout.CENTER);
+        JPanel topRight = new JPanel(new BorderLayout(5, 5));
+        topRight.add(statsLabel, BorderLayout.NORTH);
+        topRight.add(roomLabel, BorderLayout.CENTER);
+        topRight.add(minimapPanel, BorderLayout.SOUTH);
 
         JPanel bottomRight = new JPanel(new BorderLayout());
         bottomRight.add(scrollPane, BorderLayout.CENTER);
         bottomRight.add(keysLabel, BorderLayout.SOUTH);
-        rightPanel.add(bottomRight, BorderLayout.SOUTH);
+
+        rightPanel.add(topRight, BorderLayout.NORTH);
+        rightPanel.add(bottomRight, BorderLayout.CENTER);
 
         add(rightPanel, BorderLayout.EAST);
+    }
+
+    public void setSwitcher(ViewSwitcher switcher) {
+        this.switcher = switcher;
     }
 
     public void refresh() {
@@ -89,6 +103,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
         waitingForArtifactChoice = false;
         logArea.setText("");
         requestFocusInWindow();
+        minimapPanel.setState(null);
     }
 
     // --- View ---
@@ -118,7 +133,9 @@ public class GamePanel extends JPanel implements View, KeyListener {
 
         if (controller.getState() != null) {
             showHeroStats(controller.getState().getHero());
+            minimapPanel.setState(controller.getState());
         }
+
     }
 
     @Override
@@ -191,6 +208,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
         }
 
         switch (key) {
+            case KeyEvent.VK_C -> { if (switcher != null) switcher.switchToConsole(); }
             case KeyEvent.VK_UP    -> controller.move(Direction.NORTH);
             case KeyEvent.VK_DOWN  -> controller.move(Direction.SOUTH);
             case KeyEvent.VK_RIGHT -> controller.move(Direction.EAST);

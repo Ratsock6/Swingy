@@ -1,5 +1,6 @@
 package fr.aallouv.swingy.view.console;
 
+import fr.aallouv.swingy.ViewSwitcher;
 import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.HeroClass;
@@ -14,6 +15,8 @@ public class ConsoleRunner {
     private final GameController controller;
     private final ConsoleView view;
     private final Scanner scanner;
+    private volatile boolean active;
+    private ViewSwitcher switcher;
 
     private boolean waitingForCombatChoice;
     private boolean waitingForArtifactChoice;
@@ -24,6 +27,15 @@ public class ConsoleRunner {
         this.scanner = new Scanner(System.in);
         this.waitingForCombatChoice = false;
         this.waitingForArtifactChoice = false;
+        this.active = true;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setSwitcher(ViewSwitcher switcher) {
+        this.switcher = switcher;
     }
 
     public void run() {
@@ -31,6 +43,13 @@ public class ConsoleRunner {
 
         while (true) {
             String input = scanner.nextLine().trim().toLowerCase();
+
+            if (!active) continue;
+
+            if (input.equals("gui")) {
+                if (switcher != null) switcher.switchToGui();
+                continue;
+            }
 
             if (controller.isGameOver()) {
                 showMainMenu();
@@ -133,15 +152,13 @@ public class ConsoleRunner {
             case "s" -> controller.move(Direction.SOUTH);
             case "e" -> controller.move(Direction.EAST);
             case "w" -> controller.move(Direction.WEST);
-            case "q" -> {
-                view.showHeroStats(controller.getState().getHero());
-            }
+            case "q" -> view.showHeroStats(controller.getState().getHero());
             case "x" -> {
                 System.out.println("Retour au menu.");
                 controller.getState().setGameOver(true);
                 showMainMenu();
             }
-            default -> view.showError("Commande invalide. (n/s/e/w/q/x)");
+            default -> view.showError("Commande invalide. (n/s/e/w/q/x/gui)");
         }
     }
 

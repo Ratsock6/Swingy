@@ -17,18 +17,30 @@ public class Main {
         }
 
         GameController controller = new GameController(new FileHeroRepository());
+        ConsoleView consoleView = new ConsoleView();
+        ConsoleRunner consoleRunner = new ConsoleRunner(controller, consoleView);
+        consoleView.setRunner(consoleRunner);
 
-        if (args[0].equals("gui")) {
-            SwingUtilities.invokeLater(() -> {
-                MainWindow window = new MainWindow(controller);
+        boolean guiMode = args[0].equals("gui");
+
+        SwingUtilities.invokeLater(() -> {
+            MainWindow window = new MainWindow(controller);
+
+            ViewSwitcher switcher = new ViewSwitcher(controller, consoleView, consoleRunner, window);
+            consoleRunner.setSwitcher(switcher);
+            window.getGamePanel().setSwitcher(switcher);
+            window.getMenuPanel().setSwitcher(switcher);
+
+            if (guiMode) {
+                controller.setView(window.getGamePanel());
                 window.setVisible(true);
-            });
-        } else {
-            ConsoleView consoleView = new ConsoleView();
-            controller.setView(consoleView);
-            ConsoleRunner runner = new ConsoleRunner(controller, consoleView);
-            consoleView.setRunner(runner);
-            runner.run();
-        }
+            } else {
+                controller.setView(consoleView);
+                window.setVisible(false);
+            }
+
+            Thread consoleThread = new Thread(consoleRunner::run);
+            consoleThread.start();
+        });
     }
 }

@@ -1,5 +1,6 @@
 package fr.aallouv.swingy.view.gui;
 
+import fr.aallouv.swingy.ViewSwitcher;
 import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.HeroClass;
@@ -17,6 +18,7 @@ public class MenuPanel extends JPanel {
     private final JPanel heroListPanel;
     private final JTextField nameField;
     private final JComboBox<HeroClass> classCombo;
+    private ViewSwitcher switcher;
 
     public MenuPanel(GameController controller, MainWindow window) {
         this.controller = controller;
@@ -69,6 +71,14 @@ public class MenuPanel extends JPanel {
         centerPanel.add(createPanel);
         centerPanel.add(selectPanel);
         add(centerPanel, BorderLayout.CENTER);
+
+        JButton consoleBtn = new JButton("Passer en mode Console");
+        consoleBtn.addActionListener(e -> { if (switcher != null) switcher.switchToConsole(); });
+        add(consoleBtn, BorderLayout.SOUTH);
+    }
+
+    public void setSwitcher(ViewSwitcher switcher) {
+        this.switcher = switcher;
     }
 
     public void refresh() {
