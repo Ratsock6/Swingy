@@ -26,6 +26,8 @@ public class GamePanel extends JPanel implements View, KeyListener {
     private final JLabel roomLabel;
     private ViewSwitcher switcher;
     private final MinimapPanel minimapPanel;
+    private Room currentRoom;
+    private List<Direction> currentDirections;
 
     private boolean waitingForCombatChoice;
     private boolean waitingForArtifactChoice;
@@ -126,16 +128,16 @@ public class GamePanel extends JPanel implements View, KeyListener {
 
     @Override
     public void showRoom(Room room, List<Direction> availableDirections) {
+        currentRoom = room;
+        currentDirections = availableDirections;
         roomLabel.setText("Salle : " + room.getRoomType() + " (" + room.getX() + ", " + room.getY() + ")");
         roomPanel.setRoom(room, availableDirections);
         waitingForCombatChoice = false;
         waitingForArtifactChoice = false;
-
         if (controller.getState() != null) {
             showHeroStats(controller.getState().getHero());
-            minimapPanel.setState(controller.getState());
         }
-
+        refreshMinimap();
     }
 
     @Override
@@ -146,6 +148,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
                 + " DEF:" + villain.getDefense());
         log("→ F pour combattre, R pour fuir.");
         waitingForCombatChoice = true;
+        refreshMinimap();
     }
 
     @Override
@@ -155,6 +158,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
         } else {
             log("✘ Vous avez été vaincu...");
         }
+        refreshMinimap();
     }
 
     @Override
@@ -172,6 +176,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
     @Override
     public void showMessage(String message) {
         log(message);
+        refreshMinimap();
     }
 
     @Override
@@ -228,5 +233,16 @@ public class GamePanel extends JPanel implements View, KeyListener {
             logArea.append(message + "\n");
             logArea.setCaretPosition(logArea.getDocument().getLength());
         });
+    }
+
+    // --- Minimap ---
+
+    private void refreshMinimap() {
+        if (controller.getState() != null) {
+            minimapPanel.setState(controller.getState());
+        }
+        if (currentRoom != null) {
+            roomPanel.setRoom(currentRoom, currentDirections);
+        }
     }
 }
