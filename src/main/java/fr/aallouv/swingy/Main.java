@@ -1,5 +1,13 @@
 package fr.aallouv.swingy;
 
+import fr.aallouv.swingy.controller.GameController;
+import fr.aallouv.swingy.repository.FileHeroRepository;
+import fr.aallouv.swingy.view.console.ConsoleRunner;
+import fr.aallouv.swingy.view.console.ConsoleView;
+import fr.aallouv.swingy.view.gui.MainWindow;
+
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -8,12 +16,19 @@ public class Main {
             System.exit(1);
         }
 
-        boolean guiMode = args[0].equals("gui");
+        GameController controller = new GameController(new FileHeroRepository());
 
-        if (guiMode) {
-            System.out.println("[GUI mode] - not yet implemented");
+        if (args[0].equals("gui")) {
+            SwingUtilities.invokeLater(() -> {
+                MainWindow window = new MainWindow(controller);
+                window.setVisible(true);
+            });
         } else {
-            System.out.println("[Console mode] - not yet implemented");
+            ConsoleView consoleView = new ConsoleView();
+            controller.setView(consoleView);
+            ConsoleRunner runner = new ConsoleRunner(controller, consoleView);
+            consoleView.setRunner(runner);
+            runner.run();
         }
     }
 }
