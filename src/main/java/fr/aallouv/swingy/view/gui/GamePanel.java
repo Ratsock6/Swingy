@@ -231,6 +231,9 @@ public class GamePanel extends JPanel implements View, KeyListener {
     @Override
     public void showError(String message) {
         log("[Erreur] " + message);
+        SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE)
+        );
     }
 
     @Override

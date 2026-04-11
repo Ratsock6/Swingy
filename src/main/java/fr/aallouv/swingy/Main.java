@@ -12,6 +12,8 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
+        java.util.logging.Logger.getLogger("org.hibernate.validator.internal.util.Version")
+                .setLevel(java.util.logging.Level.OFF);
         if (args.length != 1 || (!args[0].equals("console") && !args[0].equals("gui"))) {
             System.err.println("Usage: java -jar swingy.jar [console|gui]");
             System.exit(1);

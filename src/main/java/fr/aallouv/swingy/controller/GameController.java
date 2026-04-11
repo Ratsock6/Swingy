@@ -11,8 +11,16 @@ import fr.aallouv.swingy.model.map.*;
 import fr.aallouv.swingy.repository.HeroRepository;
 import fr.aallouv.swingy.view.View;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
 
 public class GameController {
 
@@ -20,10 +28,13 @@ public class GameController {
     private final GameEngine engine;
     private View view;
     private GameState state;
+    private final Validator validator;
 
     public GameController(HeroRepository repository) {
         this.repository = repository;
         this.engine = new GameEngine();
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        this.validator = factory.getValidator();
     }
 
     public void setView(View view) {
@@ -43,9 +54,17 @@ public class GameController {
 
     public void createHero(String name, String heroClassName) {
         try {
-            HeroClass heroClass =
-                    HeroClass.valueOf(heroClassName.toUpperCase());
+            HeroClass heroClass = HeroClass.valueOf(heroClassName.toUpperCase());
             Hero hero = new Hero.Builder(name, heroClass).build();
+
+            Set<ConstraintViolation<Hero>> violations = validator.validate(hero);
+            if (!violations.isEmpty()) {
+                for (ConstraintViolation<Hero> violation : violations) {
+                    view.showError(violation.getMessage());
+                }
+                return;
+            }
+
             repository.save(hero);
             startGame(hero);
         } catch (IllegalArgumentException e) {

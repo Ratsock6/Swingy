@@ -119,19 +119,7 @@ public class MenuPanel extends JPanel {
     private void onCreateHero() {
         String name = nameField.getText().trim();
         HeroClass heroClass = (HeroClass) classCombo.getSelectedItem();
-
-        if (name.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Le nom du héros ne peut pas être vide.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (name.length() < 2 || name.length() > 20) {
-            JOptionPane.showMessageDialog(this, "Le nom doit faire entre 2 et 20 caractères.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        controller.setView(window.getGamePanel());
         controller.createHero(name, heroClass.name());
-        window.showGame();
     }
 
     private void onSelectHero(int index) {
