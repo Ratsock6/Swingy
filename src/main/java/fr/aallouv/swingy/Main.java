@@ -2,6 +2,7 @@ package fr.aallouv.swingy;
 
 import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.repository.FileHeroRepository;
+import fr.aallouv.swingy.repository.RepositoryFactory;
 import fr.aallouv.swingy.view.console.ConsoleRunner;
 import fr.aallouv.swingy.view.console.ConsoleView;
 import fr.aallouv.swingy.view.gui.MainWindow;
@@ -16,7 +17,7 @@ public class Main {
             System.exit(1);
         }
 
-        GameController controller = new GameController(new FileHeroRepository());
+        GameController controller = new GameController(RepositoryFactory.create());
         ConsoleView consoleView = new ConsoleView();
         ConsoleRunner consoleRunner = new ConsoleRunner(controller, consoleView);
         consoleView.setRunner(consoleRunner);

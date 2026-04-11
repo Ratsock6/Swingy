@@ -37,6 +37,10 @@ public class GameController {
         view.showMainMenu(heroes);
     }
 
+    public List<Hero> getHeroes() {
+        return repository.findAll();
+    }
+
     public void createHero(String name, String heroClassName) {
         try {
             HeroClass heroClass =
@@ -83,12 +87,13 @@ public class GameController {
             return;
         }
 
+        state.setLastMoveDirection(direction);
         state.setHeroX(next.getX());
         state.setHeroY(next.getY());
         state.setCurrentRoom(next);
         next.setVisited(true);
+        showCurrentRoom();
         next.onEnter(this);
-        state.setLastMoveDirection(direction);
     }
 
     private void showCurrentRoom() {
@@ -217,7 +222,10 @@ public class GameController {
     }
 
     public void onEnterChoice(ChoiceRoom room) {
-        showCurrentRoom();
+        if (room.isResolved()) {
+            view.showMessage("Vous avez déjà fait votre choix dans cette salle.");
+            return;
+        }
         view.showChoiceRoom(room);
         pendingRoom = room;
     }

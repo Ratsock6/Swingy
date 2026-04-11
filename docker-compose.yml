@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: swingy_db
+    environment:
+      POSTGRES_DB: swingy
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - swingy_data:/var/lib/postgresql/data
+
+volumes:
+  swingy_data:

@@ -84,7 +84,7 @@ public class MenuPanel extends JPanel {
     public void refresh() {
         heroListPanel.removeAll();
 
-        List<Hero> heroes = new FileHeroRepository().findAll();
+        List<Hero> heroes = controller.getHeroes();
 
         if (heroes.isEmpty()) {
             heroListPanel.add(new JLabel("Aucun héros sauvegardé."));

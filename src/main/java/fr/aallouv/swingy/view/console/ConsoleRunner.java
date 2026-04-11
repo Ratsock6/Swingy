@@ -5,7 +5,6 @@ import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.HeroClass;
 import fr.aallouv.swingy.model.map.Direction;
-import fr.aallouv.swingy.repository.FileHeroRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -94,12 +93,12 @@ public class ConsoleRunner {
     private void showMainMenu() {
         waitingForCombatChoice = false;
         waitingForArtifactChoice = false;
-        List<Hero> heroes = new FileHeroRepository().findAll();
+        List<Hero> heroes = controller.getHeroes();
         view.showMainMenu(heroes);
     }
 
     private void handleMenuInput(String input) {
-        List<Hero> heroes = new FileHeroRepository().findAll();
+        List<Hero> heroes = controller.getHeroes();
 
         if (input.equals("1")) {
             handleCreateHero();
