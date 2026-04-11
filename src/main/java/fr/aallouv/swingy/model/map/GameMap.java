@@ -38,11 +38,12 @@ public class GameMap {
 
     private Room randomRoom(int x, int y) {
         int roll = random.nextInt(100);
-        if (roll < 40) return new CombatRoom(x, y);
-        if (roll < 55) return new EliteRoom(x, y);
-        if (roll < 65) return new RestRoom(x, y);
-        if (roll < 75) return new TrapRoom(x, y);
-        if (roll < 85) return new ChoiceRoom(x, y);
+        if (roll < 35) return new CombatRoom(x, y);
+        if (roll < 50) return new EliteRoom(x, y);
+        if (roll < 60) return new RestRoom(x, y);
+        if (roll < 70) return new TrapRoom(x, y);
+        if (roll < 78) return new ChoiceRoom(x, y);
+        if (roll < 88) return new CoffreRoom(x, y);
         return new DistortionRoom(x, y);
     }
 

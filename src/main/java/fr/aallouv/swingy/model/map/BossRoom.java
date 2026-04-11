@@ -23,4 +23,7 @@ public class BossRoom extends Room {
 
     public boolean isBossDefeated() { return bossDefeated; }
     public void setBossDefeated(boolean bossDefeated) { this.bossDefeated = bossDefeated; }
+
+    @Override
+    public boolean isActivated() { return bossDefeated; }
 }

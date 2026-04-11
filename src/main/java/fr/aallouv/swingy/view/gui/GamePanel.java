@@ -131,7 +131,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
         currentRoom = room;
         currentDirections = availableDirections;
         roomLabel.setText("Salle : " + room.getRoomType() + " (" + room.getX() + ", " + room.getY() + ")");
-        roomPanel.setRoom(room, availableDirections);
+        roomPanel.setRoom(room, availableDirections, controller.getState());
         waitingForCombatChoice = false;
         waitingForArtifactChoice = false;
         if (controller.getState() != null) {
@@ -246,7 +246,7 @@ public class GamePanel extends JPanel implements View, KeyListener {
             minimapPanel.setState(controller.getState());
         }
         if (currentRoom != null) {
-            roomPanel.setRoom(currentRoom, currentDirections);
+            roomPanel.setRoom(currentRoom, currentDirections, controller.getState());
         }
     }
 }

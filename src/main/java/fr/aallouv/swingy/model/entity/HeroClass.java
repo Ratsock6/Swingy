@@ -4,8 +4,7 @@ public enum HeroClass {
 
     WARRIOR("Warrior",120,15,8,5,3),
     MAGE("Mage",70,8,4,14,10),
-    ROGUE("Rogue",90,12,5,8,6),
-    GUARDIAN("Guardian",150,10, 14, 3,2);
+    ROGUE("Rogue",90,12,5,8,6);
 
     public final String displayName;
     public final int baseHp;

@@ -11,7 +11,7 @@ public class GameEngine {
 
     private static final int TRAP_DAMAGE_PERCENT = 15;
     private static final int REST_HEAL_PERCENT = 30;
-    private static final double RUN_SUCCESS_CHANCE = 0.5;
+    private static final double RUN_SUCCESS_CHANCE = 1;
 
     private final Random random = new Random();
 

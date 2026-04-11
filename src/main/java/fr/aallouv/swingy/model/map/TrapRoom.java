@@ -24,5 +24,6 @@ public class TrapRoom extends Room {
         return "TRAP";
     }
 
-    public boolean isTriggered() { return triggered; }
+    @Override
+    public boolean isActivated() { return triggered; }
 }

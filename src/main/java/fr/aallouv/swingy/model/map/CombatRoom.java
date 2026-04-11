@@ -23,4 +23,7 @@ public class CombatRoom extends Room {
 
     public boolean isCleared() { return cleared; }
     public void setCleared(boolean cleared) { this.cleared = cleared; }
+
+    @Override
+    public boolean isActivated() { return cleared; }
 }

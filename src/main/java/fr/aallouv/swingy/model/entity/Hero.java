@@ -110,6 +110,54 @@ public class Hero extends Entity {
         return xpRequiredForLevel(level) - experience;
     }
 
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+
+    public void removeGold(int gold) {
+        this.gold -= gold;
+    }
+
+    // --- Setter ---
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    @Override
+    public void setAttack(int v) {
+        super.setAttack(v);
+    }
+
+    @Override
+    public void setDefense(int v) {
+        super.setDefense(v);
+    }
+
+    @Override
+    public void setHitPoints(int hp) {
+        super.setHitPoints(hp);
+    }
+
+    @Override
+    public void setLevel(int level) {
+        super.setLevel(level);
+    }
+
+    @Override
+    public void setMaxHitPoints(int maxHp) {
+        super.setMaxHitPoints(maxHp);
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // --- Builder ---
 
     public static class Builder {

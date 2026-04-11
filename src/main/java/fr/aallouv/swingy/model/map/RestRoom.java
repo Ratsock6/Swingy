@@ -24,5 +24,6 @@ public class RestRoom extends Room {
         return "REST";
     }
 
-    public boolean isUsed() { return used; }
+    @Override
+    public boolean isActivated() { return used; }
 }

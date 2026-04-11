@@ -23,4 +23,7 @@ public class DistortionRoom extends Room {
     public String getRoomType() {
         return "DISTORTION";
     }
+
+    @Override
+    public boolean isActivated() { return triggered; }
 }

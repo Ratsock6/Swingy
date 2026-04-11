@@ -47,4 +47,8 @@ public abstract class Room {
     public int getY() { return y; }
     public boolean isVisited() { return visited; }
     public void setVisited(boolean visited) { this.visited = visited; }
+
+    public boolean isActivated() {
+        return false;
+    }
 }

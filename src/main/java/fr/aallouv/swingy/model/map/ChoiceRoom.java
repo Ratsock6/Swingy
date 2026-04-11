@@ -21,6 +21,8 @@ public class ChoiceRoom extends Room {
         return "CHOICE";
     }
 
-    public boolean isResolved() { return resolved; }
     public void setResolved(boolean resolved) { this.resolved = resolved; }
+
+    @Override
+    public boolean isActivated() { return resolved; }
 }

@@ -1,24 +1,52 @@
 package fr.aallouv.swingy.view.gui;
 
+import fr.aallouv.swingy.model.entity.HeroClass;
+import fr.aallouv.swingy.model.game.GameState;
 import fr.aallouv.swingy.model.map.Direction;
+import fr.aallouv.swingy.model.map.ExitRoom;
 import fr.aallouv.swingy.model.map.Room;
+import fr.aallouv.swingy.util.AssetLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.*;
 import java.util.List;
 
 public class RoomPanel extends JPanel {
 
     private Room currentRoom;
     private List<Direction> availableDirections;
+    private GameState gameState;
 
-    public RoomPanel() {
-        setBackground(Color.DARK_GRAY);
+    private static final Map<String, String> DIRECTION_KEY_TO_FILE = new HashMap<>();
+
+    static {
+        DIRECTION_KEY_TO_FILE.put("E",    "E");
+        DIRECTION_KEY_TO_FILE.put("N",    "N");
+        DIRECTION_KEY_TO_FILE.put("O",    "O");
+        DIRECTION_KEY_TO_FILE.put("S",    "S");
+        DIRECTION_KEY_TO_FILE.put("EN",   "EN");
+        DIRECTION_KEY_TO_FILE.put("NO",   "NO");
+        DIRECTION_KEY_TO_FILE.put("NS",   "NS");
+        DIRECTION_KEY_TO_FILE.put("EO",   "OE");
+        DIRECTION_KEY_TO_FILE.put("ES",   "SE");
+        DIRECTION_KEY_TO_FILE.put("OS",   "SO");
+        DIRECTION_KEY_TO_FILE.put("ENO",  "NEO");
+        DIRECTION_KEY_TO_FILE.put("ENS",  "ENS");
+        DIRECTION_KEY_TO_FILE.put("NOS",  "NSO");
+        DIRECTION_KEY_TO_FILE.put("EOS",  "SOE");
+        DIRECTION_KEY_TO_FILE.put("ENOS", "NSOE");
     }
 
-    public void setRoom(Room room, List<Direction> directions) {
+    public RoomPanel() {
+        setBackground(Color.BLACK);
+    }
+
+    public void setRoom(Room room, List<Direction> directions, GameState state) {
         this.currentRoom = room;
         this.availableDirections = directions;
+        this.gameState = state;
         repaint();
     }
 
@@ -30,44 +58,110 @@ public class RoomPanel extends JPanel {
         int w = getWidth();
         int h = getHeight();
 
-        // Fond selon le type de salle
-        g.setColor(getRoomColor(currentRoom.getRoomType()));
-        g.fillRect(w / 4, h / 4, w / 2, h / 2);
+        drawRoomTile(g, w, h);
+        drawTheme(g, w, h);
+        drawCharacter(g, w, h);
+    }
 
-        // Nom du type
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.BOLD, 14));
-        FontMetrics fm = g.getFontMetrics();
-        String label = currentRoom.getRoomType();
-        g.drawString(label, (w - fm.stringWidth(label)) / 2, h / 2);
-
-        // Portes
-        g.setColor(Color.YELLOW);
-        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        if (availableDirections != null) {
-            for (Direction d : availableDirections) {
-                switch (d) {
-                    case NORTH -> g.drawString("▲", w / 2 - 6, h / 4 - 5);
-                    case SOUTH -> g.drawString("▼", w / 2 - 6, h * 3 / 4 + 15);
-                    case EAST  -> g.drawString("▶", w * 3 / 4 + 5, h / 2);
-                    case WEST  -> g.drawString("◀", w / 4 - 15, h / 2);
-                }
-            }
+    private void drawRoomTile(Graphics g, int w, int h) {
+        String key = buildDirectionKey();
+        String fileKey = DIRECTION_KEY_TO_FILE.getOrDefault(key, "N");
+        BufferedImage tile = AssetLoader.load("/map/rooms/room_" + fileKey + ".png");
+        if (tile != null) {
+            g.drawImage(tile, 0, 0, w, h, null);
+        } else {
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(0, 0, w, h);
         }
     }
 
-    private Color getRoomColor(String type) {
-        return switch (type) {
-            case "START"      -> new Color(0, 100, 0);
-            case "EXIT"       -> new Color(0, 0, 150);
-            case "BOSS"       -> new Color(120, 0, 0);
-            case "ELITE"      -> new Color(100, 0, 100);
-            case "COMBAT"     -> new Color(140, 60, 0);
-            case "REST"       -> new Color(0, 80, 80);
-            case "TRAP"       -> new Color(80, 80, 0);
-            case "CHOICE"     -> new Color(60, 60, 60);
-            case "DISTORTION" -> new Color(40, 0, 80);
-            default           -> Color.GRAY;
+    private void drawTheme(Graphics g, int w, int h) {
+        String folder = getThemeFolder();
+        if (folder == null) return;
+
+        boolean activated = isRoomActivated();
+        String suffix = activated ? "_2" : "_1";
+        BufferedImage theme = AssetLoader.load("/map/themes/" + folder + "/" + folder + suffix + ".png");
+        if (theme == null) return;
+
+        int size = Math.min(w, h) / 2;
+        int x = (w - size) / 2;
+        int y = (h - size) / 2 - size / 6;
+        g.drawImage(theme, x, y, size, size, null);
+    }
+
+    private void drawCharacter(Graphics g, int w, int h) {
+        if (gameState == null) return;
+        HeroClass heroClass = gameState.getHero().getHeroClass();
+        Direction lastDir = gameState.getLastMoveDirection();
+
+        String spriteSuffix = switch (lastDir) {
+            case NORTH -> "back";
+            case SOUTH -> "front";
+            case EAST  -> "right";
+            case WEST  -> "left";
         };
+
+        String folder = heroClass.name().toLowerCase();
+        BufferedImage sprite = AssetLoader.load("/map/characters/" + folder + "/" + folder + "_" + spriteSuffix + ".png");
+        if (sprite == null) return;
+
+        int size = Math.min(w, h) / 4;
+
+        int x = switch (lastDir) {
+            case NORTH -> (w - size) / 2;
+            case SOUTH -> (w - size) / 2;
+            case EAST  -> w / 6;
+            case WEST  -> w - w / 6 - size;
+        };
+
+        int y = switch (lastDir) {
+            case NORTH -> h - h / 6 - size;
+            case SOUTH -> h / 6;
+            case EAST  -> (h - size) / 2;
+            case WEST  -> (h - size) / 2;
+        };
+
+        g.drawImage(sprite, x, y, size, size, null);
+    }
+
+    private String buildDirectionKey() {
+        if (availableDirections == null) return "N";
+        List<String> letters = new ArrayList<>();
+        for (Direction d : availableDirections) {
+            letters.add(switch (d) {
+                case NORTH -> "N";
+                case SOUTH -> "S";
+                case EAST  -> "E";
+                case WEST  -> "O";
+            });
+        }
+        Collections.sort(letters);
+        StringBuilder sb = new StringBuilder();
+        for (String l : letters) sb.append(l);
+        return sb.toString();
+    }
+
+    private String getThemeFolder() {
+        if (currentRoom == null) return null;
+        return switch (currentRoom.getRoomType()) {
+            case "COMBAT"     -> "combat";
+            case "ELITE"      -> "elite";
+            case "BOSS"       -> "boss";
+            case "TRAP"       -> "piege";
+            case "REST"       -> "repos";
+            case "CHOICE"     -> "choice";
+            case "DISTORTION" -> "distortion";
+            case "COFFRE"     -> "coffre";
+            case "EXIT"       -> "exit";
+            default           -> null;
+        };
+    }
+
+    private boolean isRoomActivated() {
+        if (currentRoom instanceof ExitRoom) {
+            return gameState != null && gameState.isBossDefeated();
+        }
+        return currentRoom.isActivated();
     }
 }

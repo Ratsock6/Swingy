@@ -21,6 +21,8 @@ public class EliteRoom extends Room {
         return "ELITE";
     }
 
-    public boolean isCleared() { return cleared; }
     public void setCleared(boolean cleared) { this.cleared = cleared; }
+
+    @Override
+    public boolean isActivated() { return cleared; }
 }

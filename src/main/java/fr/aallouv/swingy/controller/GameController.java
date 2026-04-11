@@ -88,6 +88,7 @@ public class GameController {
         state.setCurrentRoom(next);
         next.setVisited(true);
         next.onEnter(this);
+        state.setLastMoveDirection(direction);
     }
 
     private void showCurrentRoom() {
@@ -105,6 +106,14 @@ public class GameController {
         view.showMessage("Vous essayez de rentrer dans la salle : Start");
         view.showMessage("Vous êtes à la salle de départ.");
         showCurrentRoom();
+    }
+
+    public void onEnterCoffre(CoffreRoom room) {
+        int gold = 10 + state.getHero().getLevel() * 5 + new java.util.Random().nextInt(20);
+        state.getHero().addGold(gold);
+        repository.save(state.getHero());
+        showCurrentRoom();
+        view.showMessage("Vous trouvez un coffre ! +" + gold + " or.");
     }
 
     public void onEnterCombat(CombatRoom room) {

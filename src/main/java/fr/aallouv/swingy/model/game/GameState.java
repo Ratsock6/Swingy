@@ -1,6 +1,7 @@
 package fr.aallouv.swingy.model.game;
 
 import fr.aallouv.swingy.model.entity.Hero;
+import fr.aallouv.swingy.model.map.Direction;
 import fr.aallouv.swingy.model.map.GameMap;
 import fr.aallouv.swingy.model.map.Room;
 
@@ -14,6 +15,7 @@ public class GameState {
     private boolean bossDefeated;
     private boolean gameOver;
     private boolean victory;
+    private Direction lastMoveDirection = Direction.SOUTH;
 
     public GameState(Hero hero, GameMap map) {
         this.hero = hero;
@@ -83,4 +85,8 @@ public class GameState {
     public void setVictory(boolean victory) {
         this.victory = victory;
     }
+
+    public Direction getLastMoveDirection() { return lastMoveDirection; }
+
+    public void setLastMoveDirection(Direction direction) { this.lastMoveDirection = direction; }
 }
