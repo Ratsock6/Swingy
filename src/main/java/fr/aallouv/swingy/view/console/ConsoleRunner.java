@@ -17,9 +17,14 @@ public class ConsoleRunner {
     private final Scanner scanner;
     private volatile boolean active;
     private ViewSwitcher switcher;
+    private boolean waitingForRestChoice;
+    private boolean restAlreadyUsed;
+    private boolean waitingForCoffreChoice;
+    private boolean coffreAlreadyOpened;
 
     private boolean waitingForCombatChoice;
     private boolean waitingForArtifactChoice;
+    private boolean waitingForChoiceRoom;
 
     public ConsoleRunner(GameController controller, ConsoleView view) {
         this.controller = controller;
@@ -53,6 +58,16 @@ public class ConsoleRunner {
 
             if (controller.isGameOver()) {
                 showMainMenu();
+                continue;
+            }
+
+            if (waitingForRestChoice) {
+                handleRestChoice(input);
+                continue;
+            }
+
+            if (waitingForCoffreChoice) {
+                handleCoffreChoice(input);
                 continue;
             }
 
@@ -130,6 +145,30 @@ public class ConsoleRunner {
         controller.createHero(name, classes[classIndex].name());
     }
 
+    private void handleRestChoice(String input) {
+        if (restAlreadyUsed) {
+            waitingForRestChoice = false;
+            return;
+        }
+        switch (input) {
+            case "1" -> { waitingForRestChoice = false; controller.confirmRest(); }
+            case "2" -> { waitingForRestChoice = false; controller.declineRest(); }
+            default  -> view.showError("1 ou 2.");
+        }
+    }
+
+    private void handleCoffreChoice(String input) {
+        if (coffreAlreadyOpened) {
+            waitingForCoffreChoice = false;
+            return;
+        }
+        switch (input) {
+            case "1" -> { waitingForCoffreChoice = false; controller.confirmCoffre(); }
+            case "2" -> { waitingForCoffreChoice = false; controller.declineCoffre(); }
+            default  -> view.showError("1 ou 2.");
+        }
+    }
+
     private void handleSelectHero(List<Hero> heroes) {
         System.out.print("Numéro du héros : ");
         String input = scanner.nextLine().trim();
@@ -142,6 +181,15 @@ public class ConsoleRunner {
             return;
         }
         controller.selectHero(index);
+    }
+
+    private void handleChoiceRoom(String input) {
+        switch (input) {
+            case "1" -> { waitingForChoiceRoom = false; controller.declineChoice(); }
+            case "2" -> { waitingForChoiceRoom = false; controller.acceptGoldOffer(); }
+            case "3" -> { waitingForChoiceRoom = false; controller.acceptSacrificeOffer(); }
+            default  -> view.showError("1, 2 ou 3.");
+        }
     }
 
     // --- Jeu ---
@@ -200,5 +248,19 @@ public class ConsoleRunner {
             }
             default -> view.showError("1 pour équiper, 2 pour ignorer.");
         }
+    }
+
+    public void onRestChoice(boolean alreadyUsed) {
+        this.restAlreadyUsed = alreadyUsed;
+        this.waitingForRestChoice = true;
+    }
+
+    public void onCoffreChoice(boolean alreadyOpened) {
+        this.coffreAlreadyOpened = alreadyOpened;
+        this.waitingForCoffreChoice = true;
+    }
+
+    public void onChoiceRoom() {
+        this.waitingForChoiceRoom = true;
     }
 }

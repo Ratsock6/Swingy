@@ -3,6 +3,7 @@ package fr.aallouv.swingy.view.console;
 import fr.aallouv.swingy.model.artifact.Artifact;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.Villain;
+import fr.aallouv.swingy.model.map.ChoiceRoom;
 import fr.aallouv.swingy.model.map.Direction;
 import fr.aallouv.swingy.model.map.Room;
 import fr.aallouv.swingy.view.View;
@@ -116,5 +117,47 @@ public class ConsoleView implements View {
             System.out.println("GAME OVER. Votre héros est mort.");
         }
         System.out.println(SEPARATOR);
+    }
+
+    @Override
+    public void showRestChoice(boolean alreadyUsed) {
+        if (alreadyUsed) {
+            System.out.println("Vous vous êtes déjà reposé ici.");
+            System.out.println("1. Rester  2. Partir");
+        } else {
+            System.out.println("Une salle de repos. Voulez-vous vous soigner ?");
+            System.out.println("1. Se soigner  2. Plus tard");
+        }
+        System.out.print("> ");
+        if (runner != null) runner.onRestChoice(alreadyUsed);
+    }
+
+    @Override
+    public void showCoffreChoice(boolean alreadyOpened) {
+        if (alreadyOpened) {
+            System.out.println("Ce coffre est déjà ouvert.");
+            System.out.println("1. Continuer");
+        } else {
+            System.out.println("Vous trouvez un coffre. Voulez-vous l'ouvrir ?");
+            System.out.println("1. Ouvrir  2. Plus tard");
+        }
+        System.out.print("> ");
+        if (runner != null) runner.onCoffreChoice(alreadyOpened);
+    }
+
+    @Override
+    public void showChoiceRoom(ChoiceRoom room) {
+        System.out.println(SEPARATOR);
+        System.out.println("Salle de choix :");
+        System.out.println("1. Revenir plus tard");
+        System.out.println("2. [OR] +" + room.getGoldOffer().bonus + " "
+                + room.getGoldOffer().stat.name()
+                + " pour " + room.getGoldOffer().cost + " or");
+        System.out.println("3. [SACRIFICE] +" + room.getSacrificeOffer().gainAmount + " "
+                + room.getSacrificeOffer().gainStat.name()
+                + " / -" + room.getSacrificeOffer().loseAmount + " "
+                + room.getSacrificeOffer().loseStat.name());
+        System.out.print("> ");
+        if (runner != null) runner.onChoiceRoom();
     }
 }

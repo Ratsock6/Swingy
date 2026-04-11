@@ -5,6 +5,7 @@ import fr.aallouv.swingy.controller.GameController;
 import fr.aallouv.swingy.model.artifact.Artifact;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.Villain;
+import fr.aallouv.swingy.model.map.ChoiceRoom;
 import fr.aallouv.swingy.model.map.Direction;
 import fr.aallouv.swingy.model.map.Room;
 import fr.aallouv.swingy.view.View;
@@ -31,6 +32,9 @@ public class GamePanel extends JPanel implements View, KeyListener {
 
     private boolean waitingForCombatChoice;
     private boolean waitingForArtifactChoice;
+    private boolean waitingForRestChoice;
+    private boolean waitingForCoffreChoice;
+    private boolean waitingForChoiceRoom;
 
     public GamePanel(GameController controller, MainWindow window) {
         this.controller = controller;
@@ -76,7 +80,8 @@ public class GamePanel extends JPanel implements View, KeyListener {
         JLabel keysLabel = new JLabel(
                 "<html><center>↑ Nord &nbsp; ↓ Sud &nbsp; ← Ouest &nbsp; → Est<br>" +
                         "F : Combattre &nbsp; R : Fuir &nbsp; E : Équiper &nbsp; I : Ignorer<br>" +
-                        "S : Stats &nbsp; M : Menu &nbsp; C : Console</center></html>",
+                        "H : Se soigner &nbsp; O : Ouvrir coffre &nbsp; X : Plus tard<br>" +
+                        "G : Offre or &nbsp; T : Sacrifice &nbsp; S : Stats &nbsp; M : Menu &nbsp; C : Console</center></html>",
                 SwingConstants.CENTER
         );
         keysLabel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
@@ -106,6 +111,9 @@ public class GamePanel extends JPanel implements View, KeyListener {
         logArea.setText("");
         requestFocusInWindow();
         minimapPanel.setState(null);
+        waitingForRestChoice = false;
+        waitingForCoffreChoice = false;
+        waitingForChoiceRoom = false;
     }
 
     // --- View ---
@@ -124,6 +132,43 @@ public class GamePanel extends JPanel implements View, KeyListener {
                 + "Or : " + hero.getGold()
                 + "</html>";
         statsLabel.setText(html);
+    }
+
+    @Override
+    public void showRestChoice(boolean alreadyUsed) {
+        if (alreadyUsed) {
+            log("Vous vous êtes déjà reposé ici.");
+        } else {
+            log("Salle de repos — H pour se soigner, X pour plus tard.");
+            waitingForRestChoice = true;
+        }
+        requestFocusInWindow();
+    }
+
+    @Override
+    public void showCoffreChoice(boolean alreadyOpened) {
+        if (alreadyOpened) {
+            log("Ce coffre est déjà ouvert.");
+        } else {
+            log("Un coffre — O pour ouvrir, X pour plus tard.");
+            waitingForCoffreChoice = true;
+        }
+        requestFocusInWindow();
+    }
+
+    @Override
+    public void showChoiceRoom(ChoiceRoom room) {
+        log("Salle de choix :");
+        log("G : [OR] +" + room.getGoldOffer().bonus + " "
+                + room.getGoldOffer().stat.name()
+                + " pour " + room.getGoldOffer().cost + " or");
+        log("T : [SACRIFICE] +" + room.getSacrificeOffer().gainAmount + " "
+                + room.getSacrificeOffer().gainStat.name()
+                + " / -" + room.getSacrificeOffer().loseAmount + " "
+                + room.getSacrificeOffer().loseStat.name());
+        log("X : Revenir plus tard");
+        waitingForChoiceRoom = true;
+        requestFocusInWindow();
     }
 
     @Override
@@ -213,6 +258,25 @@ public class GamePanel extends JPanel implements View, KeyListener {
         if (waitingForArtifactChoice) {
             if (key == KeyEvent.VK_E) controller.equipArtifact();
             if (key == KeyEvent.VK_I) controller.ignoreArtifact();
+            return;
+        }
+
+        if (waitingForRestChoice) {
+            if (key == KeyEvent.VK_H) { waitingForRestChoice = false; controller.confirmRest(); }
+            if (key == KeyEvent.VK_X) { waitingForRestChoice = false; controller.declineRest(); }
+            return;
+        }
+
+        if (waitingForCoffreChoice) {
+            if (key == KeyEvent.VK_O) { waitingForCoffreChoice = false; controller.confirmCoffre(); }
+            if (key == KeyEvent.VK_X) { waitingForCoffreChoice = false; controller.declineCoffre(); }
+            return;
+        }
+
+        if (waitingForChoiceRoom) {
+            if (key == KeyEvent.VK_G) { waitingForChoiceRoom = false; controller.acceptGoldOffer(); }
+            if (key == KeyEvent.VK_T) { waitingForChoiceRoom = false; controller.acceptSacrificeOffer(); }
+            if (key == KeyEvent.VK_X) { waitingForChoiceRoom = false; controller.declineChoice(); }
             return;
         }
 

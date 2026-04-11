@@ -3,6 +3,7 @@ package fr.aallouv.swingy.view;
 import fr.aallouv.swingy.model.artifact.Artifact;
 import fr.aallouv.swingy.model.entity.Hero;
 import fr.aallouv.swingy.model.entity.Villain;
+import fr.aallouv.swingy.model.map.ChoiceRoom;
 import fr.aallouv.swingy.model.map.Direction;
 import fr.aallouv.swingy.model.map.Room;
 
@@ -19,4 +20,7 @@ public interface View {
     void showMessage(String message);
     void showError(String message);
     void showGameOver(boolean victory);
+    void showRestChoice(boolean alreadyUsed);
+    void showCoffreChoice(boolean alreadyOpened);
+    void showChoiceRoom(ChoiceRoom room);
 }

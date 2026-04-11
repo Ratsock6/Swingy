@@ -108,12 +108,59 @@ public class GameController {
         showCurrentRoom();
     }
 
+    public void onEnterRest(RestRoom room) {
+        showCurrentRoom();
+        view.showRestChoice(room.isActivated());
+        pendingRoom = room;
+    }
+
     public void onEnterCoffre(CoffreRoom room) {
+        showCurrentRoom();
+        view.showCoffreChoice(room.isOpened());
+        pendingRoom = room;
+    }
+
+    public void confirmRest() {
+        if (!(pendingRoom instanceof RestRoom room)) return;
+        if (room.isActivated()) {
+            view.showMessage("Vous vous êtes déjà reposé ici.");
+            pendingRoom = null;
+            return;
+        }
+        int healed = engine.computeHeal(state.getHero());
+        room.setUsed(true);
+        repository.save(state.getHero());
+        pendingRoom = null;
+        view.showMessage("Vous récupérez " + healed + " HP.");
+        showCurrentRoom();
+    }
+
+    public void declineRest() {
+        view.showMessage("Vous décidez de ne pas vous reposer pour l'instant.");
+        pendingRoom = null;
+        showCurrentRoom();
+    }
+
+    public void confirmCoffre() {
+        if (!(pendingRoom instanceof CoffreRoom room)) return;
+        if (room.isOpened()) {
+            view.showMessage("Le coffre est déjà ouvert.");
+            pendingRoom = null;
+            return;
+        }
         int gold = 10 + state.getHero().getLevel() * 5 + new java.util.Random().nextInt(20);
         state.getHero().addGold(gold);
+        room.setOpened(true);
         repository.save(state.getHero());
+        pendingRoom = null;
+        view.showMessage("Vous ouvrez le coffre ! +" + gold + " or.");
         showCurrentRoom();
-        view.showMessage("Vous trouvez un coffre ! +" + gold + " or.");
+    }
+
+    public void declineCoffre() {
+        view.showMessage("Vous décidez d'ouvrir le coffre plus tard.");
+        pendingRoom = null;
+        showCurrentRoom();
     }
 
     public void onEnterCombat(CombatRoom room) {
@@ -157,13 +204,6 @@ public class GameController {
         view.showGameOver(true);
     }
 
-    public void onEnterRest(RestRoom room) {
-        showCurrentRoom();
-        view.showMessage("Vous essayez de rentrer dans la salle : Rest");
-        int healed = engine.computeHeal(state.getHero());
-        view.showMessage("Vous vous reposez et récupérez " + healed + " HP.");
-    }
-
     public void onEnterTrap(TrapRoom room) {
         showCurrentRoom();
         view.showMessage("Vous essayez de rentrer dans la salle : Trap");
@@ -178,9 +218,55 @@ public class GameController {
 
     public void onEnterChoice(ChoiceRoom room) {
         showCurrentRoom();
-        view.showMessage("Vous essayez de rentrer dans la salle : Choice");
-        view.showMessage("Salle de choix — non implémentée pour l'instant.");
+        view.showChoiceRoom(room);
+        pendingRoom = room;
+    }
+
+    public void declineChoice() {
+        view.showMessage("Vous décidez de revenir plus tard.");
+        pendingRoom = null;
+        showCurrentRoom();
+    }
+
+    public void acceptGoldOffer() {
+        if (!(pendingRoom instanceof ChoiceRoom room)) return;
+        ChoiceRoom.GoldOffer offer = room.getGoldOffer();
+        if (state.getHero().getGold() < offer.cost) {
+            view.showMessage("Vous n'avez pas assez d'or.");
+            return;
+        }
+        state.getHero().addGold(-offer.cost);
+        applyStatBonus(offer.stat, offer.bonus);
         room.setResolved(true);
+        repository.save(state.getHero());
+        view.showMessage("Marché conclu ! +" + offer.bonus + " " + offer.stat.name() + " pour " + offer.cost + " or.");
+        pendingRoom = null;
+        showCurrentRoom();
+    }
+
+    public void acceptSacrificeOffer() {
+        if (!(pendingRoom instanceof ChoiceRoom room)) return;
+        ChoiceRoom.SacrificeOffer offer = room.getSacrificeOffer();
+        applyStatBonus(offer.gainStat, offer.gainAmount);
+        applyStatBonus(offer.loseStat, -offer.loseAmount);
+        room.setResolved(true);
+        repository.save(state.getHero());
+        view.showMessage("Sacrifice accepté ! +" + offer.gainAmount + " " + offer.gainStat.name()
+                + " / -" + offer.loseAmount + " " + offer.loseStat.name());
+        pendingRoom = null;
+        showCurrentRoom();
+    }
+
+    private void applyStatBonus(ChoiceRoom.StatType stat, int amount) {
+        switch (stat) {
+            case ATTACK  -> state.getHero().setAttack(Math.max(1, state.getHero().getAttack() + amount));
+            case DEFENSE -> state.getHero().setDefense(Math.max(0, state.getHero().getDefense() + amount));
+            case HP      -> {
+                int newMax = Math.max(1, state.getHero().getMaxHitPoints() + amount);
+                state.getHero().setMaxHitPoints(newMax);
+                state.getHero().setHitPoints(Math.min(state.getHero().getHitPoints(), newMax));
+            }
+        }
     }
 
     public void onEnterDistortion(DistortionRoom room) {

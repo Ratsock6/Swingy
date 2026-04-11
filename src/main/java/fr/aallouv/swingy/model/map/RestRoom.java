@@ -15,7 +15,6 @@ public class RestRoom extends Room {
     public void onEnter(GameController controller) {
         if (!used) {
             controller.onEnterRest(this);
-            used = true;
         }
     }
 
@@ -26,4 +25,8 @@ public class RestRoom extends Room {
 
     @Override
     public boolean isActivated() { return used; }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
 }

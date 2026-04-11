@@ -15,7 +15,6 @@ public class CoffreRoom extends Room {
     public void onEnter(GameController controller) {
         if (!opened) {
             controller.onEnterCoffre(this);
-            opened = true;
         }
     }
 
